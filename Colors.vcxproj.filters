@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="utils">
+      <UniqueIdentifier>{c116d32a-d0b6-47e3-bc98-cfdb207b0884}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gamestates">
+      <UniqueIdentifier>{56fc1830-7f43-433a-a305-400188d02930}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="content">
+      <UniqueIdentifier>{85878114-fd2a-462e-a230-7217f86d7bf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="content\resources">
+      <UniqueIdentifier>{b01d8f28-8273-4fe7-9c71-146248e23c1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="content\dialogs">
+      <UniqueIdentifier>{6fa035c4-5050-4a4a-919d-d370d6969f75}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Colors.cpp" />
+    <ClCompile Include="src\utils\SimpleHighscoreService.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Board.cpp" />
+    <ClCompile Include="src\Map.cpp" />
+    <ClCompile Include="src\gamestates\GameOverState.cpp">
+      <Filter>gamestates</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gamestates\MainGameState.cpp">
+      <Filter>gamestates</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gamestates\HighscoreState.cpp">
+      <Filter>gamestates</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="src\Colors.h" />
+    <ClInclude Include="src\Constants.h" />
+    <ClInclude Include="src\utils\SimpleHighscoreService.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Board.h" />
+    <ClInclude Include="src\Map.h" />
+    <ClInclude Include="src\gamestates\GameOverState.h">
+      <Filter>gamestates</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameContext.h" />
+    <ClInclude Include="src\gamestates\MainGameState.h">
+      <Filter>gamestates</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameSettings.h" />
+    <ClInclude Include="src\gamestates\HighscoreState.h">
+      <Filter>gamestates</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Colors.manifest" />
+    <None Include="TODO.md" />
+    <None Include="content\screenshake.json">
+      <Filter>content</Filter>
+    </None>
+    <None Include="content\engine_settings.json">
+      <Filter>content</Filter>
+    </None>
+    <None Include="content\resources\xscale.json">
+      <Filter>content\resources</Filter>
+    </None>
+    <None Include="content\resources\gui.json">
+      <Filter>content\resources</Filter>
+    </None>
+    <None Include="content\resources\sprites.json">
+      <Filter>content\resources</Filter>
+    </None>
+    <None Include="content\dialogs\hud.json">
+      <Filter>content\dialogs</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Colors.rc" />
+  </ItemGroup>
+</Project>

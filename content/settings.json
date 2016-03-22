@@ -1,0 +1,13 @@
+"settings" { 
+    "flash_ttl" : "0.60" , 
+    "flash_scale" : "0.20" , 
+    "flash_rect" : "680,320,52,52" , 
+    "flash_scale_start" : "0.90" , 
+    "tweening_ttl" : "1.60" , 
+    "dropping_ttl" : "0.30" , 
+    "gray_scale_factor" : "2.00" , 
+    "tweening_y_offset" : "180.00" , 
+    "tweening_y_add" : "1000.00" , 
+    "shake_period" : "15.00" , 
+    "shake_amount" : "3.00"    
+}

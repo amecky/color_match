@@ -1,0 +1,19 @@
+"dialog" { 
+	"name" : "MainMenu" 
+}
+"image" {
+	"id" : "11" , "pos" : "200,650" , "rect" : "64,410,590,125" 
+}
+"button" { 
+	"id" : "1" , "pos" : "400,520" , "text" : "New Game" , "rect" : "128,0,404,64" 
+}
+"button" { 
+	"id" : "2" , "pos" : "400,200" , "text" : "Exit" , "rect" : "0,0,404,64" 
+}
+"button" { 
+	"id" : "3" , "pos" : "400,420" , "text" : "Highscores" , "rect" : "64,0,404,64"  
+}
+"button" { 
+	"id" : "4" , "pos" : "400,320" , "text" : "Credits" , "rect" : "192,0,404,64" 
+}
+

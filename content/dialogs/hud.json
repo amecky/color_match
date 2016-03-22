@@ -1,0 +1,24 @@
+numbers { 
+    id : 1
+    pos : 150,700
+    color : 132,32,32,255
+    centered : false
+    scale : 1.5
+    value : 0
+    length : 6
+}
+text { 
+    id : 2
+    pos : 200,700
+    color : 132,32,32,255
+    centered : true
+    scale : 1.5
+    text : "80%"
+}
+timer { 
+    id : 3
+    pos : 800,700
+    color : 132,32,32,255
+    centered : false
+    scale : 1.5
+}

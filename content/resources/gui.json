@@ -1,4 +1,12 @@
+MainMenu {
+	id : 1
+	file : "MainMenu"
+}
 HUD {
 	id : 2
 	file : "hud"
+}
+GameOver {
+	id : 3
+	file : "GameOver"
 }

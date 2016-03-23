@@ -29,8 +29,8 @@ bool Colors::loadContent() {
 	addGameState(new MainGameState(_context));
 	addGameState(new HighscoreState(gui, _context));
 	addGameState(new GameOverState(gui, _context));
-	//connect("MainMenu", 2, "MainGameState");
-	//connect("MainGameState", 1, "GameOverState");
+	connectGameStates("MainMenu", 1, "MainGameState");
+	connectGameStates("MainGameState", 1, "GameOverState");
 	_showSettings = false;
 	_context->hud = gui->get("hud");
 	return true;
@@ -40,7 +40,6 @@ bool Colors::loadContent() {
 // init
 // -------------------------------------------------------
 void Colors::init() {
-	//gui->activate("MainMenu");
 	activate("MainGameState");
 }
 // -------------------------------------------------------
@@ -48,22 +47,9 @@ void Colors::init() {
 // -------------------------------------------------------
 void Colors::onGUIButton(ds::DialogID dlgID,int button) {
 	LOG << "dialog " << dlgID << " button " << button;
-	/*
-	if (dlgID == 1 && button == 5) {
+	if (dlgID == 1 && button == 2) {
 		shutdown();
 	}
-	if (dlgID == 1 && button == 2) {
-		stateMachine->activate("MainGameState");
-	}
-	if (dlgID == 1 && button == 4) {
-		// highscores
-		stateMachine->activate("HighscoreState");
-	}
-	if (dlgID == 1 && button == 3) {
-		// credits
-		stateMachine->activate("Credits");
-	}
-	*/
 }
 
 // -------------------------------------------------------

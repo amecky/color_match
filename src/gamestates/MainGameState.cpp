@@ -5,9 +5,8 @@
 #include <base\GameStateMachine.h>
 
 MainGameState::MainGameState(GameContext* context) : ds::GameState("MainGameState"), _context(context) {
-	_board = new Board;
-	_board->fill(4);
-	_board->setGameSettings(&_context->settings);
+	_board = new Board(&context->settings);
+	//_board->fill(4);
 }
 
 

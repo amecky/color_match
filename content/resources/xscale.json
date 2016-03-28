@@ -8,5 +8,5 @@ font {
 	width : 405
 	height : 168
 	padding : 6
-	texture_size : 1024 
+	texture_size : 1024
 }

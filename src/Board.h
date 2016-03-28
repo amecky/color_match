@@ -67,6 +67,7 @@ enum BoardMode {
 	BM_SELECTION,
 	BM_FILLING,
 	BM_FLASHING,
+	BM_DROPPING,
 	BM_MOVING,
 	BM_READY
 };
@@ -178,20 +179,39 @@ public:
 };
 
 // -------------------------------------------------------
+// Dropping cells state
+// -------------------------------------------------------
+class DroppingCellsState : public ds::State {
+
+public:
+	DroppingCellsState() : ds::State() {}
+	virtual ~DroppingCellsState() {}
+	int activate();
+	int update(float dt);
+	int deactivate();
+	int getMode() const {
+		return BM_DROPPING;
+	}
+	const char* getName() const {
+		return "DroppingCellsState";
+	}
+	ds::StateBehavior getBehavior() const {
+		return ds::SB_TRANSIENT;
+	}
+};
+// -------------------------------------------------------
 // Board
 // -------------------------------------------------------
 class Board {
 
-
-
 public:
 	Board(GameSettings* settings);
 	virtual ~Board();
-	int select(const v2& mousePos);
+	void select();
 	int getMovesLeft() {
 		return 100;
 	}
-	void update(float elasped);
+	int update(float elasped);
 	void render();
 	void debug();
 	void rebuild();
@@ -200,19 +220,9 @@ private:
 	void drawFillGrid();
 
 	ColorGrid m_Grid;
-	Points m_Points;
-	DroppedCells m_DroppedCells;
-	MovingCells m_MovingCells;
-	float m_Timer;
-	int m_CellCounter;
 	ds::Texture m_GridTex[3];
 	ds::Texture _cellTextures[5];
-
-	int m_Counter;
 	GameSettings* _settings;
-	Vector2i _selectedPiece;
-	int _flashCount;
-
 	BoardContext _context;
 	ds::StateManager* _states;
 	

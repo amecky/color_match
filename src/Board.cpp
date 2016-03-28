@@ -7,11 +7,7 @@
 #include <sprites\SpriteBatch.h>
 #include <renderer\graphics.h>
 
-ds::Point convert(const v2& pos) {
-	int my = ((int)pos.y - STARTY + HALF_CELL_SIZE) / CELL_SIZE;
-	int mx = ((int)pos.x - STARTX + HALF_CELL_SIZE) / CELL_SIZE;
-	return ds::Point(mx, my);
-}
+
 // -------------------------------------------------------
 // Mouse over state
 // -------------------------------------------------------
@@ -23,7 +19,7 @@ int MouseOverState::activate() {
 int MouseOverState::update(float dt) {
 	BoardContext* ctx = static_cast<BoardContext*>(_ctx);
 	v2 mousePos = ds::renderer::getMousePosition();
-	ds::Point gp = convert(mousePos);
+	ds::Point gp = grid::convert(mousePos);
 	if (gp.x >= 0 && gp.y >= 0) {
 		if (gp != _selectedEntry) {
 			_selectedEntry = gp;
@@ -71,7 +67,7 @@ int PrepareBoardState::activate() {
 		for (int y = 0; y < MAX_Y; ++y) {
 			int cid = ds::math::random(0.0f, 4.99f);
 			int offset = offset = cid * CELL_SIZE;
-			Vector2f p = grid::convertFromGrid(x, y);
+			v2 p = grid::convert(x, y);
 			MyEntry& e = ctx->grid->get(x, y);
 			e.color = cid;
 			e.hidden = true;
@@ -83,8 +79,9 @@ int PrepareBoardState::activate() {
 			m.x = x;
 			m.y = y;
 			m.color = e.color;
-			m.start = grid::convertFromGrid(x, y + 20);
-			m.end = grid::convertFromGrid(x, y);
+			m.start = grid::convert(x, y + 20);
+			m.end = grid::convert(x, y);
+			m.current = m.start;
 			ctx->movingCells.push_back(m);
 
 			ctx->grid->set(x, y, e);
@@ -100,26 +97,27 @@ int SelectCellState::activate() {
 	int ret = 0;
 	BoardContext* ctx = static_cast<BoardContext*>(_ctx);
 	v2 mousePos = ds::renderer::getMousePosition();
-	ds::Point converted = convert(mousePos);
+	ds::Point converted = grid::convert(mousePos);
 	ctx->points.clear();
 	if (converted.x >= 0 && converted.y >= 0) {
 		MyEntry& me = ctx->grid->get(converted.x, converted.y);
 		ctx->points.clear();
 		ctx->grid->findMatchingNeighbours(converted.x, converted.y, ctx->points);
 		if (ctx->points.size() > 1) {
-			//ret = m_Points.size();
 			for (size_t i = 0; i < ctx->points.size(); ++i) {
 				const ds::Point& gp = ctx->points[i];
 				MyEntry& c = ctx->grid->get(gp.x, gp.y);
 				c.state = TS_SHRINKING;
 				c.timer = 0.0f;
 			}
-			LOG << "flash count: " << ctx->points.size();
+			LOG << "pieces: " << ctx->points.size();
+			int score = ctx->points.size();
+			sendEvent(BE_SCORE, &score, sizeof(int));
 			return 1;
 		}
 		ctx->points.clear();
-		return 0;
 	}
+	sendEvent(BE_INVALID_SELECTION);
 	return 0;
 }
 
@@ -133,7 +131,7 @@ int ShrinkState::update(float dt) {
 			if (!ctx->grid->isFree(x, y)) {
 				MyEntry& e = ctx->grid->get(x, y);
 				if (e.state == TS_SHRINKING) {
-					float norm = e.timer / ctx->settings->flashTTL;
+					float norm = getTimer() / ctx->settings->flashTTL;
 					e.scale = 1.0f - norm * 0.9f;
 				}
 			}
@@ -144,18 +142,66 @@ int ShrinkState::update(float dt) {
 
 int ShrinkState::deactivate() {
 	BoardContext* ctx = static_cast<BoardContext*>(_ctx);
+	ctx->points.clear();
 	for (int x = 0; x < MAX_X; ++x) {
 		for (int y = 0; y < MAX_Y; ++y) {
 			if (!ctx->grid->isFree(x, y)) {
 				MyEntry& e = ctx->grid->get(x, y);
 				if (e.state == TS_SHRINKING) {
-					ctx->grid->remove(x, y);
+					ctx->points.push_back(ds::Point(x, y));
 				}
 			}
 		}
 	}
 	return 0;
 }
+
+// -------------------------------------------------------
+// DroppingCellsState
+// -------------------------------------------------------
+int DroppingCellsState::activate() {
+	BoardContext* ctx = static_cast<BoardContext*>(_ctx);	
+	ctx->grid->remove(ctx->points, true);
+	ctx->droppedCells.clear();
+	ctx->movingCells.clear();
+	ctx->grid->dropCells(ctx->droppedCells);
+	for (size_t i = 0; i < ctx->droppedCells.size(); ++i) {
+		const ds::DroppedCell<MyEntry>& dc = ctx->droppedCells[i];
+		MyEntry& e = ctx->grid->get(dc.to);
+		e.hidden = true;
+		MovingCell m;
+		m.x = dc.to.x;
+		m.y = dc.to.y;
+		m.color = e.color;
+		m.start = grid::convert(dc.from);
+		m.end = grid::convert(dc.to);
+		m.current = m.start;
+		ctx->movingCells.push_back(m);
+	}
+	return 0;
+}
+
+int DroppingCellsState::update(float dt) {
+	BoardContext* ctx = static_cast<BoardContext*>(_ctx);
+	for (size_t i = 0; i < ctx->movingCells.size(); ++i) {
+		MovingCell& m = ctx->movingCells[i];
+		m.current = tweening::interpolate(&tweening::easeInOutCubic, m.start, m.end, getTimer(), ctx->settings->droppingTTL);
+	}
+	return 0;
+}
+
+int DroppingCellsState::deactivate() {
+	BoardContext* ctx = static_cast<BoardContext*>(_ctx);
+	for (size_t i = 0; i < ctx->movingCells.size(); ++i) {
+		MovingCell& m = ctx->movingCells[i];
+		MyEntry& e = ctx->grid->get(m.x, m.y);
+		e.hidden = false;
+	}
+	ctx->movingCells.clear();
+	return 0;
+}
+
+
 // -------------------------------------------------------
 // Board
 // -------------------------------------------------------
@@ -174,11 +220,13 @@ Board::Board(GameSettings* settings) : _settings(settings) {
 	_states->add<PrepareBoardState>();
 	_states->add<SelectCellState>();
 	_states->add<ShrinkState>();
+	_states->add<DroppingCellsState>();
 	_states->addTransition(BM_FILLING,   0, BM_MOVING);
 	_states->addTransition(BM_MOVING,    0, BM_RUNNING, _settings->droppingTTL);
 	_states->addTransition(BM_SELECTION, 1, BM_FLASHING);
 	_states->addTransition(BM_SELECTION, 0, BM_RUNNING);
-	_states->addTransition(BM_FLASHING,  0, BM_RUNNING, _settings->flashTTL);
+	_states->addTransition(BM_FLASHING,  0, BM_DROPPING, _settings->flashTTL);
+	_states->addTransition(BM_DROPPING, 0, BM_RUNNING, _settings->droppingTTL);
 }
 
 Board::~Board(void) {
@@ -189,11 +237,9 @@ Board::~Board(void) {
 // Draw
 // -------------------------------------------------------
 void Board::render() {
-
-	ds::sprites::draw(Vector2f(295, 362), m_GridTex[0]);
-	ds::sprites::draw(Vector2f(670, 362), m_GridTex[1]);
-	ds::sprites::draw(Vector2f(885, 362), m_GridTex[2]);
-
+	ds::sprites::draw(v2(295, 362), m_GridTex[0]);
+	ds::sprites::draw(v2(670, 362), m_GridTex[1]);
+	ds::sprites::draw(v2(885, 362), m_GridTex[2]);
 	// pieces
 	ds::Sprite sp;
 	for (int x = 0; x < MAX_X; ++x) {
@@ -201,12 +247,11 @@ void Board::render() {
 			if (!m_Grid.isFree(x, y)) {
 				MyEntry& e = m_Grid.get(x, y);
 				if (!e.hidden) {
-					ds::sprites::draw(grid::convertFromGrid(x, y),_cellTextures[e.color],0.0f,e.scale,e.scale);
+					ds::sprites::draw(grid::convert(x, y),_cellTextures[e.color],0.0f,e.scale,e.scale);
 				}
 			}
 		}
 	}
-
 	// moving cells
 	for (size_t i = 0; i < _context.movingCells.size(); ++i) {
 		const MovingCell& cell = _context.movingCells[i];
@@ -218,85 +263,22 @@ void Board::render() {
 // -------------------------------------------------------
 // Update
 // -------------------------------------------------------
-void Board::update(float elapsed) {
-
+int Board::update(float elapsed) {
+	int ret = 0;
 	_states->tick(elapsed);
-	/*
-	if (m_Mode == BM_FILLING) {
-		m_Timer += elapsed;
-		if (m_Timer > _settings->tweeningTTL) {
-			m_Mode = BM_READY;
-			m_Timer = 0.0f;
-		}
-	}
-	else if (m_Mode == BM_FLASHING) {
-		m_Timer += elapsed;
-		if (m_Timer > _settings->flashTTL) {
-			m_Mode = BM_READY;
-			m_Timer = 0.0f;
-			m_Grid.remove(m_Points,true);
-			m_DroppedCells.clear();
-			m_Grid.dropCells(m_DroppedCells);
-			for (size_t i = 0; i < m_DroppedCells.size(); ++i) {
-				ds::DroppedCell<MyEntry>* dc = &m_DroppedCells[i];
-				MyEntry& e = m_Grid.get(dc->to.x, dc->to.y);
-				e.hidden = true;
-				MovingCell m;
-				m.x = dc->to.x;
-				m.y = dc->to.y;
-				m.color = e.color;
-				m.start = grid::convertFromGrid(dc->from.x, dc->from.y);
-				m.end = grid::convertFromGrid(dc->to.x, dc->to.y);
-				m_MovingCells.push_back(m);
+	if (_states->hasEvents()) {
+		const ds::EventStream& events = _states->getEventStream();
+		for (int i = 0; i < events.num(); ++i) {
+			if (events.getType(i) == BE_INVALID_SELECTION) {
+				// play sound
+				LOG << "INVALID SELECTION!!!";
 			}
-			if (!m_DroppedCells.empty()) {
-				m_Mode = BM_MOVING;
-				m_Timer = 0.0f;
-			}			
-		}
-		
-	}
-	*/
-	/*
-	else if (m_Mode == BM_MOVING) {
-		m_Timer += elapsed;
-		if (m_Timer > _settings->droppingTTL) {
-			m_Mode = BM_READY;
-			m_Timer = 0.0f;
-			for (size_t i = 0; i < m_MovingCells.size(); ++i) {
-				MovingCell& m = m_MovingCells[i];
-				MyEntry& e = m_Grid.get(m.x, m.y);
-				e.hidden = false;
-			}
-			m_MovingCells.clear();
-		}
-		else {
-			float norm = m_Timer / _settings->droppingTTL;
-			for (size_t i = 0; i < m_MovingCells.size(); ++i) {
-				MovingCell& m = m_MovingCells[i];
-				m.current = tweening::interpolate(&tweening::easeOutQuad, m.start, m.end, m_Timer, _settings->droppingTTL);
+			else if (events.getType(i) == BE_SCORE) {
+				events.get(i, &ret);
+				LOG << "ret: " << ret;
 			}
 		}
 	}
-	*/
-	/*
-	else if (m_Mode == BM_READY) {
-		v2 mousePos = ds::renderer::getMousePosition();
-		int my = ((int)mousePos.y - STARTY + HALF_CELL_SIZE)/CELL_SIZE;
-		int mx = ((int)mousePos.x - STARTX + HALF_CELL_SIZE)/CELL_SIZE;
-
-		if (mx >= 0 && my >= 0) {
-			if (mx != _selectedPiece.x || my != _selectedPiece.y) {
-				_selectedPiece = Vector2i(mx,my);
-				MyEntry& me = m_Grid(mx, my);
-				if (me.state == TS_NORMAL) {
-					me.timer = 0.0f;
-					me.state = TS_WIGGLE;
-				}
-			}
-		}
-	}
-	*/
 	for (int x = 0; x < MAX_X; ++x) {
 		for (int y = 0; y < MAX_Y; ++y) {
 			if (!m_Grid.isFree(x, y)) {
@@ -316,32 +298,23 @@ void Board::update(float elapsed) {
 			}
 		}
 	}
+	return ret;
 }
 
 // -------------------------------------------------------
-// move
+// rebuild grid
 // -------------------------------------------------------
-//void Board::move(const Vector2f& mousePos) {
-	//Vector2i converted = grid::convertMousePosToGridPos(mousePos);
-	//if ( converted.x > 0 && converted.y > 0) {
-		//LOG << "move grid pos " << converted.x << " " << converted.y;
-		//m_Grid.shiftColumns(converted.x);
-	//}
-//}
-
 void Board::rebuild() {
-	m_MovingCells.clear();
 	_states->activate(BM_FILLING);
 }
+
 // -------------------------------------------------------
 // Select
 // -------------------------------------------------------
-int Board::select(const Vector2f& mousePos) {
+void Board::select() {
 	if (_states->getCurrentMode() == BM_RUNNING) {
 		_states->activate(BM_SELECTION);
 	}
-	int ret = -1;
-	return ret;
 }
 
 // -------------------------------------------------------

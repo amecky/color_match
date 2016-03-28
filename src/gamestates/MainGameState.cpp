@@ -6,7 +6,6 @@
 
 MainGameState::MainGameState(GameContext* context) : ds::GameState("MainGameState"), _context(context) {
 	_board = new Board(&context->settings);
-	//_board->fill(4);
 }
 
 
@@ -20,6 +19,7 @@ MainGameState::~MainGameState() {
 void MainGameState::activate() {	
 	_context->resetScore();
 	_board->rebuild();
+	// FIXME: reset score
 	_context->hud->activate();	
 }
 
@@ -34,19 +34,10 @@ void MainGameState::deactivate() {
 // update
 // --------------------------------------------
 int MainGameState::update(float dt) {
-	// nothing to do
-	_board->update(dt);
-	return 0;
-}
-
-// --------------------------------------------
-// click
-// --------------------------------------------
-int MainGameState::onButtonUp(int button, int x, int y) {
-	int points = _board->select(Vector2f(x, y));
+	int points = _board->update(dt);
 	if (points > 0) {
 		_context->score.points += points * 10;
-		_context->hud->setNumber(1,_context->score.points);
+		_context->hud->setNumber(1, _context->score.points);
 		if (points > _context->score.highestCombo) {
 			_context->score.highestCombo = points;
 			LOG << "new highest combo: " << _context->score.highestCombo;
@@ -55,6 +46,14 @@ int MainGameState::onButtonUp(int button, int x, int y) {
 		float percentage = (1.0f - static_cast<float>(_context->score.piecesLeft) / static_cast<float>(_context->score.totalPieces)) * 100.0f;
 		//m_HUD.setPercentage(static_cast<int>(percentage));
 	}
+	return 0;
+}
+
+// --------------------------------------------
+// click
+// --------------------------------------------
+int MainGameState::onButtonUp(int button, int x, int y) {
+	_board->select();
 	return 0;
 }
 
@@ -68,6 +67,9 @@ void MainGameState::render() {
 int MainGameState::onChar(int ascii) {
 	if (ascii == 'e') {
 		return 1;
+	}
+	if (ascii == 'r') {
+		_board->rebuild();
 	}
 	return 0;
 }

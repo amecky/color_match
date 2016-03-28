@@ -1,12 +1,13 @@
 #pragma once
 #include <math\Vector.h>
+#include <lib\Grid.h>
 
 namespace grid {
 
-	Vector2i convertMousePos(const Vector2f& mousePos);
+	v2 convert(int gx,int gy);
 
-	Vector2i convertMousePosToGridPos(const Vector2f& mousePos);
+	v2 convert(const ds::Point& p);
 
-	Vector2f convertFromGrid(int gx,int gy);
+	ds::Point convert(const v2& pos);
 }
 

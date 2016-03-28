@@ -3,23 +3,18 @@
 #include "Map.h"
 
 namespace grid {
-
-	Vector2i convertMousePos(const Vector2f& mousePos) {
-		int my = 768 - (int)mousePos.y;	
-		my = my - STARTY + HALF_CELL_SIZE;
-		int mx = (int)mousePos.x - STARTX + HALF_CELL_SIZE;
-		return Vector2i(mx,my);
+	
+	v2 convert(int gx,int gy) {
+		return v2(STARTX + gx * CELL_SIZE,STARTY + gy * CELL_SIZE);	
 	}
 
-
-	Vector2i convertMousePosToGridPos(const Vector2f& mousePos) {
-		Vector2i sp = convertMousePos(mousePos);
-		int x = sp.x / CELL_SIZE;
-		int y = sp.y / CELL_SIZE;
-		return Vector2i(x,y);
+	v2 convert(const ds::Point& p) {
+		return convert(p.x, p.y);
 	}
 
-	Vector2f convertFromGrid(int gx,int gy) {
-		return Vector2f(STARTX + gx * CELL_SIZE,STARTY + gy * CELL_SIZE);	
+	ds::Point convert(const v2& pos) {
+		int my = ((int)pos.y - STARTY + HALF_CELL_SIZE) / CELL_SIZE;
+		int mx = ((int)pos.x - STARTX + HALF_CELL_SIZE) / CELL_SIZE;
+		return ds::Point(mx, my);
 	}
 }

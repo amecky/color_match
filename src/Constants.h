@@ -10,6 +10,11 @@ const int MAX_X = 20;
 const int MAX_Y = 12;
 
 
-
+enum BoardEvents {
+	BE_NONE,
+	BE_INVALID_SELECTION,
+	BE_SCORE,
+	BE_EOL
+};
 
 

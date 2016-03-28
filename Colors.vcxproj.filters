@@ -76,12 +76,6 @@
     <None Include="content\dialogs\hud.json">
       <Filter>content\dialogs</Filter>
     </None>
-    <None Include="content\dialogs\MainMenu.json">
-      <Filter>content\dialogs</Filter>
-    </None>
-    <None Include="content\dialogs\GameOver.json">
-      <Filter>content\dialogs</Filter>
-    </None>
     <None Include="content\settings.json">
       <Filter>content</Filter>
     </None>

@@ -95,9 +95,6 @@ void Colors::update(float dt) {
 // Draw
 // -------------------------------------------------------
 void Colors::draw() {	
-	//if (_showSettings) {
-		//_context->settings.showDialog();
-	//}
 }
 
 // -------------------------------------------------------
@@ -116,10 +113,6 @@ void Colors::OnChar(char ascii,unsigned int keyState) {
 	}
 	if (ascii == 'f') {
 		m_Fading = !m_Fading;
-		m_GrayScaleTimer = 0.0f;
-	}
-	if (ascii == 's') {
-		m_Shaking = !m_Shaking;
 		m_GrayScaleTimer = 0.0f;
 	}
 	if ( ascii == 'r' ) {

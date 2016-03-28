@@ -30,7 +30,8 @@ init_actions {
 	load_particles : false
 	load_sprite_templates : false
 	initialize_editor : true
-	load_behaviors : true
+	load_behaviors : false
 	start_server : false
 	server_port : 9000
+	load_postfx : true
 }

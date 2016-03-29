@@ -7,12 +7,14 @@ struct GameSettings : public ds::DynamicGameSettings {
 	float flashTTL;
 	float droppingTTL;
 	float grayScaleFactor;
+	float gameOverTTL;
 
 	GameSettings() {
 		addFloat("flash_ttl", &flashTTL , 0.6f);
 		addFloat("rebuild_time", &rebuildTime, 1.0f);
 		addFloat("dropping_ttl", &droppingTTL, 0.3f);
 		addFloat("gray_scale_factor", &grayScaleFactor, 2.0f);
+		addFloat("game_over_ttl", &gameOverTTL, 2.0f);
 	}
 
 	const char* getFileName() const {

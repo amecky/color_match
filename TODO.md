@@ -5,6 +5,9 @@
 - [ ] add text message (points when pieces are removed)
 - [ ] save and handle highscore
 - [ ] score dialog - 10 latest highscores
+- [ ] add shift rows state
+- [ ] add nice HUD
+- [ ] check if there are still available moves - otherwise show message and end game
 
 ## 15.11.2015
 - [x] update game over dialog

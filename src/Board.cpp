@@ -205,10 +205,7 @@ int DroppingCellsState::deactivate() {
 // -------------------------------------------------------
 // Board
 // -------------------------------------------------------
-Board::Board(GameSettings* settings) : _settings(settings) {
-	m_GridTex[0] = ds::math::buildTexture(200, 420, 430, 486);
-	m_GridTex[1] = ds::math::buildTexture(200, 450, 320, 486);
-	m_GridTex[2] = ds::math::buildTexture(200, 860, 110, 486);
+Board::Board(GameSettings* settings) : _settings(settings) {	
 	for (int i = 0; i < 5; ++i) {
 		_cellTextures[i] = ds::math::buildTexture(680.0f, CELL_SIZE * i, CELL_SIZE, CELL_SIZE);
 	}
@@ -236,10 +233,7 @@ Board::~Board(void) {
 // -------------------------------------------------------
 // Draw
 // -------------------------------------------------------
-void Board::render() {
-	ds::sprites::draw(v2(295, 362), m_GridTex[0]);
-	ds::sprites::draw(v2(670, 362), m_GridTex[1]);
-	ds::sprites::draw(v2(885, 362), m_GridTex[2]);
+void Board::render() {	
 	// pieces
 	ds::Sprite sp;
 	for (int x = 0; x < MAX_X; ++x) {

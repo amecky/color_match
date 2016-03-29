@@ -11,6 +11,7 @@
 #include <sprites\SpriteBatch.h>
 #include "gamestates\HighscoreState.h"
 #include "gamestates\GameOverState.h"
+#include "gamestates\TestGUI.h"
 
 ds::BaseApp *app = new Colors(); 
 
@@ -26,6 +27,7 @@ bool Colors::loadContent() {
 	addGameState(new ds::BasicMenuGameState("MainMenu", "MainMenu", gui));
 	addGameState(new ds::BasicMenuGameState("Intro", "Intro", gui));
 	addGameState(new ds::BasicMenuGameState("Credits", "Credits", gui));
+	addGameState(new TestGUIState());
 	addGameState(new MainGameState(_context));
 	addGameState(new HighscoreState(gui, _context));
 	addGameState(new GameOverState(gui, _context));
@@ -40,7 +42,7 @@ bool Colors::loadContent() {
 // init
 // -------------------------------------------------------
 void Colors::init() {
-	activate("MainGameState");
+	activate("TestGUIState");
 }
 // -------------------------------------------------------
 // On GUI button

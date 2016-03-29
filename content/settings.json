@@ -3,5 +3,5 @@ settings {
     flash_scale : 0.2 
     dropping_ttl : 0.3
     gray_scale_factor : 2
-  
+	game_over_ttl : 3  
 }

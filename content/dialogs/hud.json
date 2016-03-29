@@ -3,22 +3,14 @@ numbers {
     pos : 150,700
     color : 132,32,32,255
     centered : false
-    scale : 1.5
+    scale : 1.0
     value : 0
     length : 6
 }
-text { 
-    id : 2
-    pos : 200,700
-    color : 132,32,32,255
-    centered : true
-    scale : 1.5
-    text : "80%"
-}
 timer { 
-    id : 3
+    id : 2
     pos : 800,700
     color : 132,32,32,255
     centered : false
-    scale : 1.5
+    scale : 1.0
 }

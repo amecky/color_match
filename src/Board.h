@@ -220,7 +220,7 @@ private:
 	void drawFillGrid();
 
 	ColorGrid m_Grid;
-	ds::Texture m_GridTex[3];
+	
 	ds::Texture _cellTextures[5];
 	GameSettings* _settings;
 	BoardContext _context;

@@ -17,5 +17,7 @@ private:
 	ds::Array<const char*> _dropDownItems;
 	int _dropdownState;
 	int _dropdownSelection;
+	bool _check;
+	float _stepValue;
 };
 

@@ -17,6 +17,8 @@ TestGUIState::TestGUIState() : ds::GameState("TestGUIState") {
 	_dropDownItems.push_back("Entry 8");
 	_dropdownState = 0;
 	_dropdownSelection = -1;
+	_check = false;
+	_stepValue = 5.0f;
 }
 
 
@@ -73,6 +75,8 @@ void TestGUIState::render() {
 	gui::Value("Value", v2);
 	gui::InputColor("Color", &clr);
 	gui::DropDownBox(ITEMS, 7, &_dropdownSelection, &_dropdownState);
+	gui::CheckBox("Checkbox", &_check);
+	gui::Slider("StepFloat", &_stepValue,0.0f, 10.0f,1.0f);
 	gui::end();
 }
 

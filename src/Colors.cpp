@@ -42,7 +42,7 @@ bool Colors::loadContent() {
 // init
 // -------------------------------------------------------
 void Colors::init() {
-	activate("TestGUIState");
+	//activate("TestGUIState");
 }
 // -------------------------------------------------------
 // On GUI button

@@ -28,7 +28,7 @@ init_actions {
 		texture : "gui"
 	}
 	load_particles : false
-	load_sprite_templates : false
+	load_sprite_templates : true
 	initialize_editor : true
 	load_behaviors : false
 	start_server : false

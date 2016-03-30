@@ -61,8 +61,10 @@ void TestGUIState::render() {
 	int state = 1;
 	float f = 100.0f;
 	int i = 123;
-	v2 v2(500, 400);
+	v2 v2(500, 500);
 	ds::Color clr(128, 32, 200, 192);
+	gui::PushSetting(gui::GS_LABELSIZE,100.0f);
+	gui::PushSetting(gui::GS_LINE_HEIGHT, 22.0f);
 	gui::start(1, &p);
 	gui::begin("Test",&state);
 	gui::Button("Button");
@@ -70,14 +72,17 @@ void TestGUIState::render() {
 	gui::InputFloat("Float", &f);
 	gui::InputInt("Int", &i);
 	gui::InputVec2("Vec2", &v2);	
-	gui::Separator();
+	gui::Separator();	
 	gui::Label("Label", "%g %g", v2.x, v2.y);
 	gui::Value("Value", v2);
 	gui::InputColor("Color", &clr);
 	gui::DropDownBox(ITEMS, 7, &_dropdownSelection, &_dropdownState);
 	gui::CheckBox("Checkbox", &_check);
-	gui::Slider("StepFloat", &_stepValue,0.0f, 10.0f,1.0f);
-	gui::end();
+	gui::Slider("StepFloat", &_stepValue,0.0f, 10.0f,1.0f);	
+	gui::Image("Sprite", ds::Rect(680, 0, 40, 40), 0);
+	gui::ProgressBar("Progress", 75.0f);
+	gui::PopSetting(gui::GS_LABELSIZE);
+	gui::end();	
 }
 
 

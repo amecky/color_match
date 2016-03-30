@@ -34,4 +34,5 @@ public:
 private:
 	GameContext* _context;
 	bool _showSettings;
+	
 };

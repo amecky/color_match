@@ -19,5 +19,7 @@ private:
 	int _dropdownSelection;
 	bool _check;
 	float _stepValue;
+	ds::Color _color;
+	int _colorState;
 };
 

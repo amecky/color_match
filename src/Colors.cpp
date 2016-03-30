@@ -42,7 +42,7 @@ bool Colors::loadContent() {
 // init
 // -------------------------------------------------------
 void Colors::init() {
-	//activate("TestGUIState");
+	activate("TestGUIState");
 }
 // -------------------------------------------------------
 // On GUI button
@@ -105,6 +105,12 @@ void Colors::draw() {
 void Colors::OnChar(char ascii,unsigned int keyState) {
 	if (ascii == 's') {
 		_showSettings = !_showSettings;
+	}
+	if (ascii == '1') {
+		activate("TestGUIState");
+	}
+	if (ascii == '2') {
+		deactivate("TestGUIState");
 	}
 	/*
 	if ( ascii == 't' ) {

@@ -14,6 +14,7 @@ MainGameState::MainGameState(GameContext* context) : ds::GameState("MainGameStat
 
 
 MainGameState::~MainGameState() {
+	delete _effect;
 	delete _board;
 }
 

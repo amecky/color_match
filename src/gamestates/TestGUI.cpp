@@ -19,6 +19,8 @@ TestGUIState::TestGUIState() : ds::GameState("TestGUIState") {
 	_dropdownSelection = -1;
 	_check = false;
 	_stepValue = 5.0f;
+	_color = ds::Color(128, 64, 192, 48);
+	_colorState = 0;
 }
 
 
@@ -57,7 +59,7 @@ int TestGUIState::onGUIButton(ds::DialogID dlgID, int button) {
 // render
 // --------------------------------------------
 void TestGUIState::render() {
-	v2 p = v2(300, 500);
+	v2 p = v2(300, 600);
 	int state = 1;
 	float f = 100.0f;
 	int i = 123;
@@ -79,7 +81,8 @@ void TestGUIState::render() {
 	gui::DropDownBox(ITEMS, 7, &_dropdownSelection, &_dropdownState);
 	gui::CheckBox("Checkbox", &_check);
 	gui::Slider("StepFloat", &_stepValue,0.0f, 10.0f,1.0f);	
-	gui::Image("Sprite", ds::Rect(680, 0, 40, 40), 0);
+	gui::Image("Sprite", ds::Rect(680, 0, 40, 40), 0);	
+	gui::ColorSlider("Clr-Slider", &_color, &_colorState);
 	gui::ProgressBar("Progress", 75.0f);
 	gui::PopSetting(gui::GS_LABELSIZE);
 	gui::end();	

@@ -18,6 +18,7 @@ struct GameContext {
 	Score score;
 	GameSettings settings;
 	ds::GUIDialog* hud;
+	ds::Color headColor;
 
 	void resetScore() {
 		score.highestCombo = 0;

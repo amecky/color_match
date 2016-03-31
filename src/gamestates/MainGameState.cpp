@@ -110,5 +110,11 @@ int MainGameState::onChar(int ascii) {
 			stopGame();
 		}
 	}
+	if (ascii == 'b') {
+		_board->toggleShowBoard();
+	}
+	if (ascii == 's') {
+		_board->toggleShowStates();
+	}
 	return 0;
 }

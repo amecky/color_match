@@ -215,6 +215,13 @@ public:
 	void render();
 	void debug();
 	void rebuild();
+	void showDialog();
+	void toggleShowBoard() {
+		_showBoard = !_showBoard;
+	}
+	void toggleShowStates() {
+		_showStates = !_showStates;
+	}
 private:
 	void drawGrid();
 	void drawFillGrid();
@@ -225,6 +232,10 @@ private:
 	GameSettings* _settings;
 	BoardContext _context;
 	ds::StateManager* _states;
+	int _dialogState;
+	v2 _dialogPos;
+	bool _showBoard;
+	bool _showStates;
 	
 };
 

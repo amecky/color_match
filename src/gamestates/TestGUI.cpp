@@ -67,6 +67,7 @@ void TestGUIState::render() {
 	ds::Color clr(128, 32, 200, 192);
 	gui::PushSetting(gui::GS_LABELSIZE,100.0f);
 	gui::PushSetting(gui::GS_LINE_HEIGHT, 22.0f);
+	gui::PushSetting(gui::GS_ALPHA, 0.2f);
 	gui::start(1, &p);
 	gui::begin("Test",&state);
 	gui::Button("Button");

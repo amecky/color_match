@@ -24,6 +24,7 @@ Colors::Colors() : ds::BaseApp() {
 bool Colors::loadContent() {	
 	_context = new GameContext;
 	_context->settings.load();
+	_context->headColor = ds::Color::WHITE;
 	addGameState(new ds::BasicMenuGameState("MainMenu", "MainMenu", gui));
 	addGameState(new ds::BasicMenuGameState("Intro", "Intro", gui));
 	addGameState(new ds::BasicMenuGameState("Credits", "Credits", gui));
@@ -97,6 +98,9 @@ void Colors::update(float dt) {
 // Draw
 // -------------------------------------------------------
 void Colors::draw() {	
+	ds::sprites::draw(v2(512, 734), ds::math::buildTexture(720,   0, 1024, 68));
+	ds::sprites::draw(v2(235, 734), ds::math::buildTexture(  0, 340,  316, 20), 0.0f, 1.0f, 1.0f, _context->headColor);
+	ds::sprites::draw(v2(512,  34), ds::math::buildTexture(800,   0, 1024, 68));
 }
 
 // -------------------------------------------------------

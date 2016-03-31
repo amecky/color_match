@@ -224,6 +224,10 @@ Board::Board(GameSettings* settings) : _settings(settings) {
 	_states->addTransition(BM_SELECTION, 0, BM_RUNNING);
 	_states->addTransition(BM_FLASHING,  0, BM_DROPPING, _settings->flashTTL);
 	_states->addTransition(BM_DROPPING, 0, BM_RUNNING, _settings->droppingTTL);
+	_dialogState = 1;
+	_dialogPos = v2(10, 760);
+	_showStates = false;
+	_showBoard = false;
 }
 
 Board::~Board(void) {
@@ -251,7 +255,12 @@ void Board::render() {
 		const MovingCell& cell = _context.movingCells[i];
 		ds::sprites::draw(cell.current, _cellTextures[cell.color]);
 	}
-
+	if (_showStates) {
+		_states->showDialog();
+	}
+	if (_showBoard) {
+		showDialog();
+	}
 }
 
 // -------------------------------------------------------
@@ -268,6 +277,7 @@ int Board::update(float elapsed) {
 				LOG << "INVALID SELECTION!!!";
 			}
 			else if (events.getType(i) == BE_SCORE) {
+				// FIXME: get color and set headColor
 				events.get(i, &ret);
 				LOG << "ret: " << ret;
 			}
@@ -331,4 +341,26 @@ void Board::debug() {
 		}
 		LOG << line;
 	}
+}
+
+void Board::showDialog() {
+	char buffer[32];
+	gui::start(1, &_dialogPos);
+	gui::begin("State", &_dialogState);
+
+	for (int y = MAX_Y - 1; y >= 0; --y) {
+		std::string line;
+		for (int x = 0; x < MAX_X; ++x) {
+			if (m_Grid.isFree(x, y)) {
+				line += " -- ";
+			}
+			else {
+				MyEntry& c = m_Grid.get(x, y);
+				sprintf(buffer, " %2d ", c.color);
+				line += buffer;
+			}
+		}
+		gui::Label(line.c_str());
+	}
+	gui::end();
 }

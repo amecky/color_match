@@ -21,5 +21,6 @@ private:
 	float _stepValue;
 	ds::Color _color;
 	int _colorState;
+	float _sinValues[32];
 };
 

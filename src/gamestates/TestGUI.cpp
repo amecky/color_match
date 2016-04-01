@@ -21,6 +21,10 @@ TestGUIState::TestGUIState() : ds::GameState("TestGUIState") {
 	_stepValue = 5.0f;
 	_color = ds::Color(128, 64, 192, 48);
 	_colorState = 0;
+
+	for (int i = 0; i < 32; ++i) {
+		_sinValues[i] = sin((float)i / 32.0f * TWO_PI);
+	}
 }
 
 
@@ -60,6 +64,7 @@ int TestGUIState::onGUIButton(ds::DialogID dlgID, int button) {
 // --------------------------------------------
 void TestGUIState::render() {
 	v2 p = v2(300, 600);
+	float values[] = { 0.2f, 0.4f, 0.6f, 0.3f, 0.5f, 0.9f, 0.8f };
 	int state = 1;
 	float f = 100.0f;
 	int i = 123;
@@ -67,7 +72,7 @@ void TestGUIState::render() {
 	ds::Color clr(128, 32, 200, 192);
 	gui::PushSetting(gui::GS_LABELSIZE,100.0f);
 	gui::PushSetting(gui::GS_LINE_HEIGHT, 22.0f);
-	gui::PushSetting(gui::GS_ALPHA, 0.2f);
+	//gui::PushSetting(gui::GS_ALPHA, 0.2f);
 	gui::start(1, &p);
 	gui::begin("Test",&state);
 	gui::Button("Button");
@@ -84,6 +89,7 @@ void TestGUIState::render() {
 	gui::Slider("StepFloat", &_stepValue,0.0f, 10.0f,1.0f);	
 	gui::Image("Sprite", ds::Rect(680, 0, 40, 40), 0);	
 	gui::ColorSlider("Clr-Slider", &_color, &_colorState);
+	gui::Diagram("Sin", _sinValues, 32, -1.0f, 1.0f, 0.1f);
 	gui::ProgressBar("Progress", 75.0f);
 	gui::PopSetting(gui::GS_LABELSIZE);
 	gui::end();	

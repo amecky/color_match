@@ -26,6 +26,7 @@ void MainGameState::activate() {
 	_board->rebuild();
 	_timer = 0.0f;
 	_running = true;
+	_effect->deactivate();
 	// FIXME: reset score
 	_context->hud->activate();	
 }
@@ -89,32 +90,36 @@ void MainGameState::render() {
 	_board->render();
 	_effect->render();
 	if (!_running) {
-		ds::sprites::draw(v2(512, 384), ds::math::buildTexture(840, 0, 640, 60));
+		ds::sprites::draw(v2(512, 384), ds::math::buildTexture(880, 0, 640, 60));
 	}
 }
 
-int MainGameState::onChar(int ascii) {
-	if (ascii == 'e') {
-		return 1;
-	}
-	if (ascii == 'r') {
-		_board->rebuild();
-	}
-	if (ascii == 'f') {
-		if (_effect->isActive()) {
-			_effect->deactivate();
-			_running = true;
+int MainGameState::processEvents(const ds::EventStream& events) {
+	for (uint32_t i = 0; i < events.num(); ++i) {
+		uint32_t type = events.getType(i);
+		if (type == GE_REBUILD_BOARD) {
+			_board->rebuild(); 
 		}
-		else {
-			_effect->activate();
-			stopGame();
+		else if ( type == GE_END_GAME) {
+			return 1;
 		}
-	}
-	if (ascii == 'b') {
-		_board->toggleShowBoard();
-	}
-	if (ascii == 's') {
-		_board->toggleShowStates();
+		else if (type == GE_FADE_TO_GRAY) {
+			if (_effect->isActive()) {
+				_effect->deactivate();
+				_running = true;
+			}
+			else {
+				_effect->activate();
+				stopGame();
+			}
+		}
+		else if (type == GE_TOGGLE_SHOW_BOARD) {
+			_board->toggleShowBoard();
+		}
+		else if (type == GE_TOGGLE_SHOW_STATES) {
+			_board->toggleShowStates();
+		}
 	}
 	return 0;
 }
+

@@ -26,11 +26,10 @@ public:
 		return "Colors";
 	}
 	void init();
-	void OnChar(char ascii,unsigned int keyState);
 	void update(float dt);
 	void draw();
 	void onGUIButton(ds::DialogID dlgID,int button);
-	
+	void processEvents(const ds::EventStream& events);
 private:
 	GameContext* _context;
 	bool _showSettings;

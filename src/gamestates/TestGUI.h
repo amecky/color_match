@@ -22,5 +22,7 @@ private:
 	ds::Color _color;
 	int _colorState;
 	float _sinValues[32];
+	ds::Array<const char*> _actions;
+	int _selectedAction;
 };
 

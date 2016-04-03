@@ -25,6 +25,12 @@ TestGUIState::TestGUIState() : ds::GameState("TestGUIState") {
 	for (int i = 0; i < 32; ++i) {
 		_sinValues[i] = sin((float)i / 32.0f * TWO_PI);
 	}
+
+	_actions.push_back("Action 1");
+	_actions.push_back("Action 2");
+	_actions.push_back("Action 3");
+	_actions.push_back("Action 4");
+	_actions.push_back("Action 5");
 }
 
 
@@ -91,6 +97,10 @@ void TestGUIState::render() {
 	gui::ColorSlider("Clr-Slider", &_color, &_colorState);
 	gui::Diagram("Sin", _sinValues, 32, -1.0f, 1.0f, 0.1f);
 	gui::ProgressBar("Progress", 75.0f);
+	gui::ActionBar(_actions, &_selectedAction);
+	if (_selectedAction != -1) {
+		LOG << "selected action: " << _selectedAction;
+	}
 	gui::PopSetting(gui::GS_LABELSIZE);
 	gui::end();	
 }

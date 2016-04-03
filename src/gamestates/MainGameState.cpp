@@ -38,6 +38,9 @@ void MainGameState::deactivate() {
 	_context->hud->deactivate();
 }
 
+// --------------------------------------------
+// stop game
+// --------------------------------------------
 void MainGameState::stopGame() {
 	_timer = 0.0f;
 	_running = false;
@@ -94,6 +97,9 @@ void MainGameState::render() {
 	}
 }
 
+// --------------------------------------------
+// process events
+// --------------------------------------------
 int MainGameState::processEvents(const ds::EventStream& events) {
 	for (uint32_t i = 0; i < events.num(); ++i) {
 		uint32_t type = events.getType(i);

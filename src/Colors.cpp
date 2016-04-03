@@ -39,7 +39,7 @@ bool Colors::loadContent() {
 	_context->hud = gui->get("hud");
 
 	addShortcut("Show TestGUI", '1', GE_SHOW_TEST_GUI);
-	addShortcut("HIDE TestGUI", '2', GE_HIDE_TEST_GUI);
+	addShortcut("Hide TestGUI", '2', GE_HIDE_TEST_GUI);
 	addShortcut("Rebuild Board", 'r', GE_REBUILD_BOARD);
 	addShortcut("End Game", 'e', GE_END_GAME);
 	addShortcut("Fade to gray", 'f', GE_FADE_TO_GRAY);

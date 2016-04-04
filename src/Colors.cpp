@@ -36,7 +36,6 @@ bool Colors::loadContent() {
 	connectGameStates("MainGameState", 1, "GameOverState");
 	connectGameStates("GameOverState", 1, "MainGameState");
 	_showSettings = false;
-	_context->hud = gui->get("hud");
 
 	addShortcut("Show TestGUI", '1', GE_SHOW_TEST_GUI);
 	addShortcut("Hide TestGUI", '2', GE_HIDE_TEST_GUI);
@@ -53,7 +52,7 @@ bool Colors::loadContent() {
 // init
 // -------------------------------------------------------
 void Colors::init() {
-	activate("TestGUIState");
+	activate("MainGameState");
 }
 // -------------------------------------------------------
 // On GUI button
@@ -83,39 +82,7 @@ void Colors::processEvents(const ds::EventStream& events) {
 // Update
 // -------------------------------------------------------
 void Colors::update(float dt) {
-	/*
-	if (m_Mode == GM_WAITING) {
-		m_Timer += dt;
-		if (m_Timer >= m_Settings->tweeningTTL) {
-			m_Mode = GM_RUNNING;
-		}
-	}
-	if (m_Mode == GM_RUNNING) {
-		m_HUD.tick(dt);
-	}
-	*/
-	/*
-	if ( m_Message.isActive()) {
-		m_PointMessage.timer += gameTime.elapsed;
-		ds::Color clr = ds::Color::WHITE;
-		float sn = sin(m_PointMessage.timer / MESSAGE_TTL * ds::PI);
-		clr.a = sn;
-		clr.r = sn;
-		m_Message.setColor(m_PointMessage.id,clr);
-		float scale = 1.0f + sn * MESSAGE_SCALE;
-		m_Message.setScale(m_PointMessage.id,scale);
-		Vector2f p = m_PointMessage.position;
-
-		p.x = p.x + m_PointMessage.deltaX * (1.0f - scale) /  MESSAGE_SCALE;
-		p.y = p.y + m_PointMessage.deltaY * (1.0f - scale) /  MESSAGE_SCALE;
-
-		m_Message.setPosition(m_PointMessage.id,p);
-		if ( m_PointMessage.timer > MESSAGE_TTL ) {
-			m_Message.setActive(false);
-		}
-	}
-	*/
-	//m_Board.update(dt);
+	_context->hud.tick(dt);
 }
 
 // -------------------------------------------------------
@@ -123,6 +90,6 @@ void Colors::update(float dt) {
 // -------------------------------------------------------
 void Colors::draw() {	
 	ds::sprites::draw(v2(512, 734), ds::math::buildTexture(720,   0, 1024, 68));
-	ds::sprites::draw(v2(235, 734), ds::math::buildTexture(  0, 340,  316, 20), 0.0f, 1.0f, 1.0f, _context->headColor);
 	ds::sprites::draw(v2(512,  34), ds::math::buildTexture(800,   0, 1024, 68));
+	_context->hud.render();
 }

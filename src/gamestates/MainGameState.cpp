@@ -28,14 +28,15 @@ void MainGameState::activate() {
 	_running = true;
 	_effect->deactivate();
 	// FIXME: reset score
-	_context->hud->activate();	
+	_context->hud.reset();
+	_context->hud.activate();	
 }
 
 // --------------------------------------------
 // activate
 // --------------------------------------------
 void MainGameState::deactivate() {
-	_context->hud->deactivate();
+	_context->hud.deactivate();
 }
 
 // --------------------------------------------
@@ -44,7 +45,7 @@ void MainGameState::deactivate() {
 void MainGameState::stopGame() {
 	_timer = 0.0f;
 	_running = false;
-	_context->hud->deactivate();
+	_context->hud.deactivate();
 }
 // --------------------------------------------
 // update
@@ -54,8 +55,8 @@ int MainGameState::update(float dt) {
 	if (_running) {
 		int points = _board->update(dt);
 		if (points > 0) {
-			_context->score.points += points * 10;
-			_context->hud->setNumber(1, _context->score.points);
+			_context->score.points += points * points * 10;
+			_context->hud.setNumber(_context->score.points);
 			if (points > _context->score.highestCombo) {
 				_context->score.highestCombo = points;
 				LOG << "new highest combo: " << _context->score.highestCombo;

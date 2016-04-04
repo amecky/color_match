@@ -97,9 +97,9 @@ void TestGUIState::render() {
 	gui::ColorSlider("Clr-Slider", &_color, &_colorState);
 	gui::Diagram("Sin", _sinValues, 32, -1.0f, 1.0f, 0.1f);
 	gui::ProgressBar("Progress", 75.0f);
-	gui::ActionBar(_actions, &_selectedAction);
-	if (_selectedAction != -1) {
-		LOG << "selected action: " << _selectedAction;
+	int selectedAction = gui::ActionBar(_actions);
+	if (selectedAction != -1) {
+		LOG << "selected action: " << selectedAction;
 	}
 	gui::PopSetting(gui::GS_LABELSIZE);
 	gui::end();	

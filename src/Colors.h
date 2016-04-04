@@ -13,6 +13,7 @@
 #include <sprites\Sprite.h>
 #include "Board.h"
 #include "GameContext.h"
+#include "HUD.h"
 
 class Colors : public ds::BaseApp {
 
@@ -33,5 +34,6 @@ public:
 private:
 	GameContext* _context;
 	bool _showSettings;
+	HUD _hud;
 	
 };

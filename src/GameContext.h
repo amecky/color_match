@@ -2,6 +2,7 @@
 #include "Constants.h"
 #include "GameSettings.h"
 #include <dialogs\GUIDialog.h>
+#include "HUD.h"
 
 struct Score {
 	int piecesLeft;
@@ -17,7 +18,7 @@ struct GameContext {
 
 	Score score;
 	GameSettings settings;
-	ds::GUIDialog* hud;
+	HUD hud;
 	ds::Color headColor;
 
 	void resetScore() {

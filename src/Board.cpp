@@ -1,10 +1,10 @@
 #include "Board.h"
 #include "Constants.h"
-#include <math\GameMath.h>
-#include <utils\Log.h>
+#include <core\math\GameMath.h>
+#include <core\log\Log.h>
 #include "Map.h"
-#include <math\tweening.h>
-#include <sprites\SpriteBatch.h>
+#include <core\math\tweening.h>
+#include <renderer\sprites.h>
 #include <renderer\graphics.h>
 
 
@@ -19,7 +19,7 @@ int MouseOverState::activate() {
 int MouseOverState::update(float dt) {
 	BoardContext* ctx = static_cast<BoardContext*>(_ctx);
 	v2 mousePos = ds::renderer::getMousePosition();
-	ds::Point gp = grid::convert(mousePos);
+	p2i gp = grid::convert(mousePos);
 	if (gp.x >= 0 && gp.y >= 0) {
 		if (gp != _selectedEntry) {
 			_selectedEntry = gp;
@@ -65,7 +65,7 @@ int PrepareBoardState::activate() {
 	ctx->movingCells.clear();
 	for (int x = 0; x < MAX_X; ++x) {
 		for (int y = 0; y < MAX_Y; ++y) {
-			int cid = ds::math::random(0.0f, 4.99f);
+			int cid = math::random(0.0f, 4.99f);
 			int offset = offset = cid * CELL_SIZE;
 			v2 p = grid::convert(x, y);
 			MyEntry& e = ctx->grid->get(x, y);
@@ -97,7 +97,7 @@ int SelectCellState::activate() {
 	int ret = 0;
 	BoardContext* ctx = static_cast<BoardContext*>(_ctx);
 	v2 mousePos = ds::renderer::getMousePosition();
-	ds::Point converted = grid::convert(mousePos);
+	p2i converted = grid::convert(mousePos);
 	ctx->points.clear();
 	if (converted.x >= 0 && converted.y >= 0) {
 		MyEntry& me = ctx->grid->get(converted.x, converted.y);
@@ -105,7 +105,7 @@ int SelectCellState::activate() {
 		ctx->grid->findMatchingNeighbours(converted.x, converted.y, ctx->points);
 		if (ctx->points.size() > 1) {
 			for (size_t i = 0; i < ctx->points.size(); ++i) {
-				const ds::Point& gp = ctx->points[i];
+				const p2i& gp = ctx->points[i];
 				MyEntry& c = ctx->grid->get(gp.x, gp.y);
 				c.state = TS_SHRINKING;
 				c.timer = 0.0f;
@@ -148,7 +148,7 @@ int ShrinkState::deactivate() {
 			if (!ctx->grid->isFree(x, y)) {
 				MyEntry& e = ctx->grid->get(x, y);
 				if (e.state == TS_SHRINKING) {
-					ctx->points.push_back(ds::Point(x, y));
+					ctx->points.push_back(p2i(x, y));
 				}
 			}
 		}
@@ -207,7 +207,7 @@ int DroppingCellsState::deactivate() {
 // -------------------------------------------------------
 Board::Board(GameSettings* settings) : _settings(settings) {	
 	for (int i = 0; i < 5; ++i) {
-		_cellTextures[i] = ds::math::buildTexture(680.0f, CELL_SIZE * i, CELL_SIZE, CELL_SIZE);
+		_cellTextures[i] = math::buildTexture(680.0f, CELL_SIZE * i, CELL_SIZE, CELL_SIZE);
 	}
 	_context.grid = &m_Grid;
 	_context.settings = settings;

@@ -1,5 +1,5 @@
 #pragma once
-#include <data\DynamicSettings.h>
+#include <core\data\DynamicSettings.h>
 
 struct GameSettings : public ds::DynamicGameSettings {
 
@@ -9,16 +9,12 @@ struct GameSettings : public ds::DynamicGameSettings {
 	float grayScaleFactor;
 	float gameOverTTL;
 
-	GameSettings() {
-		addFloat("flash_ttl", &flashTTL , 0.6f);
-		addFloat("rebuild_time", &rebuildTime, 1.0f);
-		addFloat("dropping_ttl", &droppingTTL, 0.3f);
-		addFloat("gray_scale_factor", &grayScaleFactor, 2.0f);
-		addFloat("game_over_ttl", &gameOverTTL, 2.0f);
-	}
-
-	const char* getFileName() const {
-		return "settings.json";
+	GameSettings() : ds::DynamicGameSettings("settings.json") {
+		add("flash_ttl", &flashTTL , 0.6f);
+		add("rebuild_time", &rebuildTime, 1.0f);
+		add("dropping_ttl", &droppingTTL, 0.3f);
+		add("gray_scale_factor", &grayScaleFactor, 2.0f);
+		add("game_over_ttl", &gameOverTTL, 2.0f);
 	}
 
 };

@@ -19,9 +19,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Colors.cpp" />
-    <ClCompile Include="src\utils\SimpleHighscoreService.cpp">
-      <Filter>utils</Filter>
-    </ClCompile>
     <ClCompile Include="src\Board.cpp" />
     <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\gamestates\GameOverState.cpp">
@@ -33,14 +30,12 @@
     <ClCompile Include="src\gamestates\HighscoreState.cpp">
       <Filter>gamestates</Filter>
     </ClCompile>
+    <ClCompile Include="src\HUD.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
     <ClInclude Include="src\Colors.h" />
     <ClInclude Include="src\Constants.h" />
-    <ClInclude Include="src\utils\SimpleHighscoreService.h">
-      <Filter>utils</Filter>
-    </ClInclude>
     <ClInclude Include="src\Board.h" />
     <ClInclude Include="src\Map.h" />
     <ClInclude Include="src\gamestates\GameOverState.h">
@@ -54,6 +49,7 @@
     <ClInclude Include="src\gamestates\HighscoreState.h">
       <Filter>gamestates</Filter>
     </ClInclude>
+    <ClInclude Include="src\HUD.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Colors.manifest" />
@@ -78,6 +74,18 @@
     </None>
     <None Include="content\settings.json">
       <Filter>content</Filter>
+    </None>
+    <None Include="content\dialogs\Credits.json">
+      <Filter>content\dialogs</Filter>
+    </None>
+    <None Include="content\dialogs\GameOver.json">
+      <Filter>content\dialogs</Filter>
+    </None>
+    <None Include="content\dialogs\Highscores.json">
+      <Filter>content\dialogs</Filter>
+    </None>
+    <None Include="content\dialogs\MainMenu.json">
+      <Filter>content\dialogs</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

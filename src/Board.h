@@ -1,12 +1,12 @@
 #pragma once
-#include <lib\Grid.h>
-#include <utils\Color.h>
+#include <core\lib\Grid.h>
+#include <core\graphics\Color.h>
 #include <sprites\Sprite.h>
 #include "Constants.h"
 #include "GameSettings.h"
-#include <utils\StateManager.h>
+#include <core\utils\StateManager.h>
 
-const ds::Point INVALID_POINT(-1, -1);
+const p2i INVALID_POINT(-1, -1);
 // -------------------------------------------------------
 // Color grid
 // -------------------------------------------------------
@@ -46,7 +46,7 @@ public:
 };
 
 typedef ds::Array<ds::Sprite> Highlights;
-typedef ds::Array<ds::Point> Points;
+typedef ds::Array<p2i> Points;
 typedef ds::Array<ds::DroppedCell<MyEntry>> DroppedCells;
 typedef ds::Array<MovingCell> MovingCells;
 
@@ -92,8 +92,8 @@ public:
 		return ds::SB_PERMANENT;
 	}
 private:
-	ds::Point _selectedEntry;
-	ds::Point _lastUpdate;
+	p2i _selectedEntry;
+	p2i _lastUpdate;
 };
 
 // -------------------------------------------------------

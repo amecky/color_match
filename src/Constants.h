@@ -1,7 +1,4 @@
 #pragma once
-#include <utils\Color.h>
-#include <math\math_types.h>
-
 const int CELL_SIZE = 40;
 const int HALF_CELL_SIZE = 20;
 const int STARTX = 130;

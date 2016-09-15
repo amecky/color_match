@@ -1,13 +1,12 @@
 #pragma once
-#include <math\Vector.h>
-#include <lib\Grid.h>
+#include <Point.h>
 
 namespace grid {
 
 	v2 convert(int gx,int gy);
 
-	v2 convert(const ds::Point& p);
+	v2 convert(const p2i& p);
 
-	ds::Point convert(const v2& pos);
+	p2i convert(const v2& pos);
 }
 

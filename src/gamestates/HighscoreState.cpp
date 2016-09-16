@@ -1,10 +1,10 @@
 #include "HighscoreState.h"
-#include <utils\Log.h>
-#include <sprites\SpriteBatch.h>
+#include <core\log\Log.h>
+#include <renderer\sprites.h>
 #include <renderer\graphics.h>
-#include <base\GameStateMachine.h>
+#include <gamestates\GameStateMachine.h>
 
-HighscoreState::HighscoreState(ds::DialogManager* gui, GameContext* context) : ds::GameState("HighscoreState"), _context(context), _gui(gui) {
+HighscoreState::HighscoreState(GameContext* context) : ds::GameState("HighscoreState"), _context(context) {
 }
 
 
@@ -15,7 +15,7 @@ HighscoreState::~HighscoreState() {
 // activate
 // --------------------------------------------
 void HighscoreState::activate() {
-	_gui->activate("Highscores");
+	//_dialog
 	/*
 	_gui->activate("GameOver");	
 	ds::GUIDialog* dlg = _gui->get("GameOver");
@@ -41,7 +41,7 @@ void HighscoreState::activate() {
 // activate
 // --------------------------------------------
 void HighscoreState::deactivate() {
-	_gui->deactivate("Highscores");
+	//_gui->deactivate("Highscores");
 }
 
 // --------------------------------------------
@@ -55,11 +55,12 @@ int HighscoreState::update(float dt) {
 // --------------------------------------------
 // click
 // --------------------------------------------
+/*
 int HighscoreState::onGUIButton(ds::DialogID dlgID, int button) {
 	
 	return button;
 }
-
+*/
 // --------------------------------------------
 // render
 // --------------------------------------------

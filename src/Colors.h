@@ -26,11 +26,16 @@ public:
 	const char* getTitle() {
 		return "Colors";
 	}
+	bool initialize() {
+		return true;
+	}
 	void init();
 	void update(float dt);
-	void draw();
-	void onGUIButton(ds::DialogID dlgID,int button);
-	void processEvents(const ds::EventStream& events);
+	void render();
+	//void onGUIButton(ds::DialogID dlgID,int button);
+	//void processEvents(const ds::EventStream& events);
+protected:
+	void prepare(ds::Settings* settings);
 private:
 	GameContext* _context;
 	bool _showSettings;

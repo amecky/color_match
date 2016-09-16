@@ -1,21 +1,31 @@
 #include "Colors.h"
-#include "utils\Log.h"
+#include <core\log\Log.h>
 #include <utils\font.h>
-#include <renderer\shader.h>
-#include <utils\StringUtils.h>
+#include <core\string\StringUtils.h>
 #include "Map.h"
-#include <renderer\shader.h>
 #include <renderer\graphics.h>
-#include <base\GameStateMachine.h>
+#include <gamestates\GameStateMachine.h>
 #include "gamestates\MainGameState.h"
-#include <sprites\SpriteBatch.h>
+#include <renderer\sprites.h>
 #include "gamestates\HighscoreState.h"
 #include "gamestates\GameOverState.h"
-#include "gamestates\TestGUI.h"
 
 ds::BaseApp *app = new Colors(); 
 
 Colors::Colors() : ds::BaseApp() {	
+}
+
+// -------------------------------------------------------
+// prepare
+// -------------------------------------------------------
+void Colors::prepare(ds::Settings* settings) {
+	settings->screenWidth = 1024;
+	settings->screenHeight = 768;
+	settings->clearColor = ds::Color(0, 0, 0, 255);
+	settings->fullScreen = false;
+	settings->reportingDirectory = "reports";
+	settings->synched = true;
+	settings->logTypes = ds::LogTypes::LT_CONSOLE | ds::LogTypes::LT_FILE;
 }
 
 // -------------------------------------------------------
@@ -25,18 +35,17 @@ bool Colors::loadContent() {
 	_context = new GameContext;
 	_context->settings.load();
 	_context->headColor = ds::Color::WHITE;
-	addGameState(new ds::BasicMenuGameState("MainMenu", "MainMenu", gui));
-	addGameState(new ds::BasicMenuGameState("Intro", "Intro", gui));
-	addGameState(new ds::BasicMenuGameState("Credits", "Credits", gui));
-	addGameState(new TestGUIState());
+	//addGameState(new ds::BasicMenuGameState("MainMenu", "MainMenu"));
+	//addGameState(new ds::BasicMenuGameState("Intro", "Intro"));
+	//addGameState(new ds::BasicMenuGameState("Credits", "Credits"));
 	addGameState(new MainGameState(_context));
-	addGameState(new HighscoreState(gui, _context));
-	addGameState(new GameOverState(gui, _context));
-	connectGameStates("MainMenu", 1, "MainGameState");
-	connectGameStates("MainGameState", 1, "GameOverState");
-	connectGameStates("GameOverState", 1, "MainGameState");
+	//addGameState(new HighscoreState(gui, _context));
+	//addGameState(new GameOverState(gui, _context));
+	//connectGameStates("MainMenu", 1, "MainGameState");
+	//connectGameStates("MainGameState", 1, "GameOverState");
+	//connectGameStates("GameOverState", 1, "MainGameState");
 	_showSettings = false;
-
+	/*
 	addShortcut("Show TestGUI", '1', GE_SHOW_TEST_GUI);
 	addShortcut("Hide TestGUI", '2', GE_HIDE_TEST_GUI);
 	addShortcut("Rebuild Board", 'r', GE_REBUILD_BOARD);
@@ -45,6 +54,10 @@ bool Colors::loadContent() {
 	addShortcut("Toggle Board", 'b', GE_TOGGLE_SHOW_BOARD);
 	addShortcut("Toggle States", 's', GE_TOGGLE_SHOW_STATES);
 	addShortcut("Toggle Settings", 't', GE_TOGGLE_SETTINGS);
+	*/
+	RID material = ds::res::find("SpriteMaterial", ds::ResourceType::MATERIAL);
+	ds::Material* m = ds::res::getMaterial(material);
+	m->texture = ds::res::find("TextureArray", ds::ResourceType::TEXTURE);
 	return true;
 }
 
@@ -57,16 +70,18 @@ void Colors::init() {
 // -------------------------------------------------------
 // On GUI button
 // -------------------------------------------------------
+/*
 void Colors::onGUIButton(ds::DialogID dlgID,int button) {
 	LOG << "dialog " << dlgID << " button " << button;
 	if (dlgID == 1 && button == 2) {
 		shutdown();
 	}
 }
-
+*/
 // -------------------------------------------------------
 // process events
 // -------------------------------------------------------
+/*
 void Colors::processEvents(const ds::EventStream& events) {
 	for (uint32_t i = 0; i < events.num(); ++i) {
 		uint32_t type = events.getType(i);
@@ -77,7 +92,7 @@ void Colors::processEvents(const ds::EventStream& events) {
 		}
 	}
 }
-
+*/
 // -------------------------------------------------------
 // Update
 // -------------------------------------------------------
@@ -88,8 +103,9 @@ void Colors::update(float dt) {
 // -------------------------------------------------------
 // Draw
 // -------------------------------------------------------
-void Colors::draw() {	
-	ds::sprites::draw(v2(512, 734), ds::math::buildTexture(720,   0, 1024, 68));
-	ds::sprites::draw(v2(512,  34), ds::math::buildTexture(800,   0, 1024, 68));
+void Colors::render() {	
+	ds::SpriteBuffer* sprites = graphics::getSpriteBuffer();
+	sprites->draw(v2(512, 734), math::buildTexture(720,   0, 1024, 68));
+	sprites->draw(v2(512, 34), math::buildTexture(800, 0, 1024, 68));
 	_context->hud.render();
 }

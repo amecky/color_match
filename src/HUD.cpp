@@ -1,6 +1,6 @@
 #include "HUD.h"
-#include <sprites\SpriteBatch.h>
-#include <math\GameMath.h>
+#include <renderer\sprites.h>
+#include <core\math\math.h>
 
 HUD::HUD() {
 	_active = false;
@@ -70,20 +70,21 @@ void HUD::setNumber(int value) {
 
 void HUD::render() {
 	if (_active) {
+		ds::SpriteBuffer* sprites = graphics::getSpriteBuffer();
 		v2 p(103, 30);
 		for (int i = 0; i < 6; ++i) {
-			ds::sprites::draw(p, ds::math::buildTexture(0, 340 + _numbers[i] * 48, 46, 42));
+			sprites->draw(p, math::buildTexture(0, 340 + _numbers[i] * 48, 46, 42));
 			p.x += 48.0f;
 		}
 		p.x = 725.0f;
 		for (int i = 0; i < 2; ++i) {
-			ds::sprites::draw(p, ds::math::buildTexture(0, 340 + _minutes[i] * 48, 46, 42));
+			sprites->draw(p, math::buildTexture(0, 340 + _minutes[i] * 48, 46, 42));
 			p.x += 48.0f;
 		}
-		ds::sprites::draw(p, ds::math::buildTexture(0, 820, 46, 42));
+		sprites->draw(p, math::buildTexture(0, 820, 46, 42));
 		p.x += 48.0f;
 		for (int i = 0; i < 2; ++i) {
-			ds::sprites::draw(p, ds::math::buildTexture(0, 340 + _seconds[i] * 48, 46, 42));
+			sprites->draw(p, math::buildTexture(0, 340 + _seconds[i] * 48, 46, 42));
 			p.x += 48.0f;
 		}
 	}

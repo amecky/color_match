@@ -1,0 +1,22 @@
+quad_index_buffer {
+	name : "SpriteQuadBuffer"
+	size : 6144
+}
+sampler_state {
+	name : "ClampSamplerState"
+	addressU : "CLAMP"
+	addressV : "CLAMP"
+	addressW : "CLAMP"
+}
+texture {
+	name : "TextureArray" 
+	file : "TextureArray.png"
+}
+font {
+	name : "nullshock"
+	file : "nullshock.json"
+}
+font {
+	name : "gui_font"
+	file : "gui_font.json"
+}

@@ -6,7 +6,7 @@
 #include <core\math\tweening.h>
 #include <renderer\sprites.h>
 #include <renderer\graphics.h>
-
+#include <base\InputSystem.h>
 
 // -------------------------------------------------------
 // Mouse over state
@@ -18,7 +18,7 @@ int MouseOverState::activate() {
 
 int MouseOverState::update(float dt) {
 	BoardContext* ctx = static_cast<BoardContext*>(_ctx);
-	v2 mousePos = ds::renderer::getMousePosition();
+	v2 mousePos = ds::input::getMousePosition();
 	p2i gp = grid::convert(mousePos);
 	if (gp.x >= 0 && gp.y >= 0) {
 		if (gp != _selectedEntry) {
@@ -96,7 +96,7 @@ int PrepareBoardState::activate() {
 int SelectCellState::activate() {
 	int ret = 0;
 	BoardContext* ctx = static_cast<BoardContext*>(_ctx);
-	v2 mousePos = ds::renderer::getMousePosition();
+	v2 mousePos = ds::input::getMousePosition();
 	p2i converted = grid::convert(mousePos);
 	ctx->points.clear();
 	if (converted.x >= 0 && converted.y >= 0) {
@@ -239,13 +239,13 @@ Board::~Board(void) {
 // -------------------------------------------------------
 void Board::render() {	
 	// pieces
-	ds::Sprite sp;
+	ds::SpriteBuffer* sprites = graphics::getSpriteBuffer();
 	for (int x = 0; x < MAX_X; ++x) {
 		for (int y = 0; y < MAX_Y; ++y) {
 			if (!m_Grid.isFree(x, y)) {
 				MyEntry& e = m_Grid.get(x, y);
 				if (!e.hidden) {
-					ds::sprites::draw(grid::convert(x, y),_cellTextures[e.color],0.0f,e.scale,e.scale);
+					sprites->draw(grid::convert(x, y),_cellTextures[e.color],0.0f,v2(e.scale,e.scale));
 				}
 			}
 		}
@@ -253,10 +253,10 @@ void Board::render() {
 	// moving cells
 	for (size_t i = 0; i < _context.movingCells.size(); ++i) {
 		const MovingCell& cell = _context.movingCells[i];
-		ds::sprites::draw(cell.current, _cellTextures[cell.color]);
+		sprites->draw(cell.current, _cellTextures[cell.color]);
 	}
 	if (_showStates) {
-		_states->showDialog();
+		//_states->showDialog();
 	}
 	if (_showBoard) {
 		showDialog();
@@ -269,6 +269,7 @@ void Board::render() {
 int Board::update(float elapsed) {
 	int ret = 0;
 	_states->tick(elapsed);
+	/*
 	if (_states->hasEvents()) {
 		const ds::EventStream& events = _states->getEventStream();
 		for (int i = 0; i < events.num(); ++i) {
@@ -283,6 +284,7 @@ int Board::update(float elapsed) {
 			}
 		}
 	}
+	*/
 	for (int x = 0; x < MAX_X; ++x) {
 		for (int y = 0; y < MAX_Y; ++y) {
 			if (!m_Grid.isFree(x, y)) {
@@ -344,6 +346,7 @@ void Board::debug() {
 }
 
 void Board::showDialog() {
+	/*
 	char buffer[32];
 	gui::start(1, &_dialogPos);
 	gui::begin("State", &_dialogState);
@@ -363,4 +366,5 @@ void Board::showDialog() {
 		gui::Label(line.c_str());
 	}
 	gui::end();
+	*/
 }

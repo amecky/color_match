@@ -4,6 +4,7 @@ settings {
     dropping_ttl : 0.3
     gray_scale_factor : 2
 	game_over_ttl : 3  
+	hints_time : 5.0
 }
 wiggle {
 	ttl : 0.3

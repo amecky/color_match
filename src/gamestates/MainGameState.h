@@ -20,7 +20,7 @@ public:
 	int onButtonUp(int button, int x, int y);
 	void activate();
 	void deactivate();
-	int onChar(int ascii);
+	//int onChar(int ascii);
 	//int processEvents(const ds::EventStream& events);
 private:
 	void stopGame();

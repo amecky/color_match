@@ -27,6 +27,7 @@ int MouseOverState::update(float dt) {
 			if (me.state == TS_NORMAL) {
 				me.timer = 0.0f;
 				me.state = TS_WIGGLE;
+				sendEvent(BE_SELECTED, &gp, sizeof(p2i));
 			}
 		}
 	}
@@ -267,22 +268,49 @@ void Board::render() {
 int Board::update(float elapsed) {
 	int ret = 0;
 	_states->tick(elapsed);
-	/*
-	if (_states->hasEvents()) {
-		const ds::EventStream& events = _states->getEventStream();
-		for (int i = 0; i < events.num(); ++i) {
-			if (events.getType(i) == BE_INVALID_SELECTION) {
+	uint32_t n = ds::events::num();
+	if (ds::events::num() > 0 ) {
+		for (int i = 0; i < n; ++i) {
+			if (ds::events::getType(i) == BE_INVALID_SELECTION) {
 				// play sound
 				LOG << "INVALID SELECTION!!!";
 			}
-			else if (events.getType(i) == BE_SCORE) {
-				// FIXME: get color and set headColor
-				events.get(i, &ret);
+			else if (ds::events::getType(i) == BE_SCORE) {
+				ds::events::get(i, &ret);
 				LOG << "ret: " << ret;
+			}
+			else if (ds::events::getType(i) == BE_SELECTED) {
+				p2i gp;
+				ds::events::get(i, &gp);
+				LOG << "gp: " << gp.x << " " << gp.y;
+				if (gp != _selection.grid) {
+					_selection.grid = gp;
+					_selection.timer = 1.0f;
+					_selection.active = true;
+				}
 			}
 		}
 	}
-	*/
+
+	if (_selection.active) {
+		_selection.timer -= elapsed;
+		if (_selection.timer <= 0.0f) {
+			ds::Array<p2i> points;
+			m_Grid.findMatchingNeighbours(_selection.grid.x, _selection.grid.y, points);
+			if (points.size() > 1) {
+				for (size_t i = 0; i <points.size(); ++i) {
+					const p2i& gp = points[i];
+					MyEntry& c = m_Grid.get(gp.x, gp.y);
+					c.timer = 0.0f;
+					c.state = TS_WIGGLE;
+				}
+				LOG << "pieces: " << points.size();
+			}
+			_selection.timer = 0.0f;
+			_selection.active = false;
+		}
+	}
+	
 	for (int x = 0; x < MAX_X; ++x) {
 		for (int y = 0; y < MAX_Y; ++y) {
 			if (!m_Grid.isFree(x, y)) {
@@ -309,6 +337,9 @@ int Board::update(float elapsed) {
 // -------------------------------------------------------
 void Board::rebuild() {
 	_states->activate(BM_FILLING);
+	_selection.grid = INVALID_POINT;
+	_selection.timer = 0.0f;
+	_selection.active = false;
 }
 
 // -------------------------------------------------------

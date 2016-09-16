@@ -205,6 +205,12 @@ public:
 // -------------------------------------------------------
 class Board {
 
+	struct Selection {
+		p2i grid;
+		float timer;
+		bool active;
+	};
+
 public:
 	Board(GameContext* context);
 	virtual ~Board();
@@ -228,7 +234,7 @@ private:
 	void drawFillGrid();
 
 	ColorGrid m_Grid;
-	
+	Selection _selection;
 	ds::Texture _cellTexture;
 	GameContext* _ctx;
 	BoardContext _context;

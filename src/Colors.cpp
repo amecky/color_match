@@ -57,6 +57,9 @@ bool Colors::loadContent() {
 	RID material = ds::res::find("SpriteMaterial", ds::ResourceType::MATERIAL);
 	ds::Material* m = ds::res::getMaterial(material);
 	m->texture = ds::res::find("TextureArray", ds::ResourceType::TEXTURE);
+
+	addShortcut("Stop game", 'e', BE_STOP_GAME);
+
 	return true;
 }
 

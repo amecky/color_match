@@ -11,6 +11,8 @@ enum BoardEvents {
 	BE_NONE,
 	BE_INVALID_SELECTION,
 	BE_SCORE,
+	BE_SELECTED,
+	BE_STOP_GAME,
 	BE_EOL
 };
 

@@ -86,7 +86,17 @@ int MainGameState::update(float dt) {
 			float percentage = (1.0f - static_cast<float>(_context->score.piecesLeft) / static_cast<float>(_context->score.totalPieces)) * 100.0f;
 			//m_HUD.setPercentage(static_cast<int>(percentage));
 		}
+
+		// event handling
+		for (uint32_t i = 0; i < ds::events::num(); ++i) {
+			uint32_t type = ds::events::getType(i);
+			LOG << "====> event: " << type;
+			if (type == BE_STOP_GAME) {
+				stopGame();
+			}
+		}
 	}
+
 	return 0;
 }
 
@@ -158,9 +168,3 @@ int MainGameState::processEvents(const ds::EventStream& events) {
 }
 */
 
-int MainGameState::onChar(int ascii) {
-	if (ascii == 'e') {
-		stopGame();
-	}
-	return 0;
-}

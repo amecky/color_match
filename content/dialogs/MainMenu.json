@@ -4,7 +4,7 @@ image_button {
 	rect : 70,0,260,60
 }
 image_button { 
-	id : 2 
+	id : 666
 	pos : 400,200 
 	rect : 130,270,260,60
 }

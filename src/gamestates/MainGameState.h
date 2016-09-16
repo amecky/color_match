@@ -7,6 +7,11 @@
 
 class MainGameState : public ds::GameState {
 
+	enum GameMode {
+		GM_RUNNING,
+		GM_OVER
+	};
+
 public:
 	MainGameState(GameContext* context);
 	~MainGameState();
@@ -15,6 +20,7 @@ public:
 	int onButtonUp(int button, int x, int y);
 	void activate();
 	void deactivate();
+	int onChar(int ascii);
 	//int processEvents(const ds::EventStream& events);
 private:
 	void stopGame();
@@ -22,7 +28,8 @@ private:
 	Board* _board;
 	ds::Texture _gridTex[3];
 	//ds::GrayFadeEffect* _effect;
-	bool _running;
+	ds::GUIDialog* _gameOver;
 	float _timer;
+	GameMode _mode;
 };
 

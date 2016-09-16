@@ -8,7 +8,6 @@
 #include "gamestates\MainGameState.h"
 #include <renderer\sprites.h>
 #include "gamestates\HighscoreState.h"
-#include "gamestates\GameOverState.h"
 
 ds::BaseApp *app = new Colors(); 
 
@@ -35,13 +34,13 @@ bool Colors::loadContent() {
 	_context = new GameContext;
 	_context->settings.load();
 	_context->headColor = ds::Color::WHITE;
-	//addGameState(new ds::BasicMenuGameState("MainMenu", "MainMenu"));
+	addGameState(new ds::BasicMenuGameState("MainMenu", "MainMenu"));
 	//addGameState(new ds::BasicMenuGameState("Intro", "Intro"));
 	//addGameState(new ds::BasicMenuGameState("Credits", "Credits"));
 	addGameState(new MainGameState(_context));
 	//addGameState(new HighscoreState(gui, _context));
-	//addGameState(new GameOverState(gui, _context));
-	//connectGameStates("MainMenu", 1, "MainGameState");
+	connectGameStates("MainMenu", 1, "MainGameState");
+	connectGameStates("MainGameState", 1, "MainGameState");
 	//connectGameStates("MainGameState", 1, "GameOverState");
 	//connectGameStates("GameOverState", 1, "MainGameState");
 	_showSettings = false;
@@ -65,7 +64,7 @@ bool Colors::loadContent() {
 // init
 // -------------------------------------------------------
 void Colors::init() {
-	activate("MainGameState");
+	activate("MainMenu");
 }
 // -------------------------------------------------------
 // On GUI button

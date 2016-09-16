@@ -20,6 +20,7 @@ struct GameContext {
 	GameSettings settings;
 	HUD hud;
 	ds::Color headColor;
+	ds::Color colors[8];
 
 	void resetScore() {
 		score.highestCombo = 0;
@@ -31,6 +32,20 @@ struct GameContext {
 		score.seconds = 0;
 		//m_PercentageNumbers.create(Vector2f(512, 50), 0);
 		//m_HUD.reset();
+	}
+
+	void pick_colors() {
+		// prepare colors
+		float goldenRatioConjugate = 0.618033988749895f;
+		float currentHue = math::random(0.0f, 1.0f);
+		for (int i = 0; i < 8; i++) {
+			ds::HSL hslColor = ds::HSL(currentHue * 360.0f, 50.0f, 50.0f);
+			colors[i] = ds::color::hsl2rgb(hslColor);
+			currentHue += goldenRatioConjugate;
+			if (currentHue > 1.0f) {
+				currentHue -= 1.0f;
+			}
+		}
 	}
 
 };

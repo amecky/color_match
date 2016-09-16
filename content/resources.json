@@ -20,3 +20,13 @@ font {
 	name : "gui_font"
 	file : "gui_font.json"
 }
+dialog {
+    name : "MainMenu"
+    file : "MainMenu"
+    font : "nullshock"
+}
+dialog {
+    name : "GameOver"
+    file : "GameOver"
+    font : "nullshock"
+}

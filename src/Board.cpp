@@ -205,12 +205,10 @@ int DroppingCellsState::deactivate() {
 // -------------------------------------------------------
 // Board
 // -------------------------------------------------------
-Board::Board(GameSettings* settings) : _settings(settings) {	
-	for (int i = 0; i < 5; ++i) {
-		_cellTextures[i] = math::buildTexture(680.0f, CELL_SIZE * i, CELL_SIZE, CELL_SIZE);
-	}
+Board::Board(GameContext* context) : _ctx(context) {	
+	_cellTexture = math::buildTexture(0,0,36,36);
 	_context.grid = &m_Grid;
-	_context.settings = settings;
+	_context.settings = &_ctx->settings;
 	_states = new ds::StateManager(&_context);
 	_states->add<MouseOverState>();
 	_states->add<MovingCellsState>();
@@ -219,11 +217,11 @@ Board::Board(GameSettings* settings) : _settings(settings) {
 	_states->add<ShrinkState>();
 	_states->add<DroppingCellsState>();
 	_states->addTransition(BM_FILLING,   0, BM_MOVING);
-	_states->addTransition(BM_MOVING,    0, BM_RUNNING, _settings->droppingTTL);
+	_states->addTransition(BM_MOVING, 0, BM_RUNNING, _ctx->settings.droppingTTL);
 	_states->addTransition(BM_SELECTION, 1, BM_FLASHING);
 	_states->addTransition(BM_SELECTION, 0, BM_RUNNING);
-	_states->addTransition(BM_FLASHING,  0, BM_DROPPING, _settings->flashTTL);
-	_states->addTransition(BM_DROPPING, 0, BM_RUNNING, _settings->droppingTTL);
+	_states->addTransition(BM_FLASHING, 0, BM_DROPPING, _ctx->settings.flashTTL);
+	_states->addTransition(BM_DROPPING, 0, BM_RUNNING, _ctx->settings.droppingTTL);
 	_dialogState = 1;
 	_dialogPos = v2(10, 760);
 	_showStates = false;
@@ -245,7 +243,7 @@ void Board::render() {
 			if (!m_Grid.isFree(x, y)) {
 				MyEntry& e = m_Grid.get(x, y);
 				if (!e.hidden) {
-					sprites->draw(grid::convert(x, y),_cellTextures[e.color],0.0f,v2(e.scale,e.scale));
+					sprites->draw(grid::convert(x, y),_cellTexture,0.0f,v2(e.scale,e.scale),_ctx->colors[e.color]);
 				}
 			}
 		}
@@ -253,7 +251,7 @@ void Board::render() {
 	// moving cells
 	for (size_t i = 0; i < _context.movingCells.size(); ++i) {
 		const MovingCell& cell = _context.movingCells[i];
-		sprites->draw(cell.current, _cellTextures[cell.color]);
+		sprites->draw(cell.current, _cellTexture,0.0f,v2(1,1),_ctx->colors[cell.color]);
 	}
 	if (_showStates) {
 		//_states->showDialog();
@@ -291,14 +289,13 @@ int Board::update(float elapsed) {
 				MyEntry& e = m_Grid.get(x, y);
 				if (e.state == TS_WIGGLE) {
 					e.timer += elapsed;
-					// FIXME: wiggleTTL
-					if (e.timer >= 0.4f) {
+					if (e.timer >= _ctx->settings.wiggle.ttl) {
 						e.state = TS_NORMAL;
 						e.scale = 1.0f;
 					}
 					else {
-						float norm = e.timer / 0.4f;
-						e.scale = 1.0f + sin(norm * TWO_PI * 2.0f) * 0.1f;
+						float norm = e.timer / _ctx->settings.wiggle.ttl;
+						e.scale = 1.0f + sin(norm * TWO_PI * _ctx->settings.wiggle.frequency) * _ctx->settings.wiggle.amplitude;
 					}
 				}
 			}

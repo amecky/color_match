@@ -5,6 +5,7 @@
 #include "Constants.h"
 #include "GameSettings.h"
 #include <core\utils\StateManager.h>
+#include "GameContext.h"
 
 const p2i INVALID_POINT(-1, -1);
 // -------------------------------------------------------
@@ -205,7 +206,7 @@ public:
 class Board {
 
 public:
-	Board(GameSettings* settings);
+	Board(GameContext* context);
 	virtual ~Board();
 	void select();
 	int getMovesLeft() {
@@ -228,8 +229,8 @@ private:
 
 	ColorGrid m_Grid;
 	
-	ds::Texture _cellTextures[5];
-	GameSettings* _settings;
+	ds::Texture _cellTexture;
+	GameContext* _ctx;
 	BoardContext _context;
 	ds::StateManager* _states;
 	int _dialogState;

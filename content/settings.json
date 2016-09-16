@@ -5,4 +5,8 @@ settings {
     gray_scale_factor : 2
 	game_over_ttl : 3  
 }
-
+wiggle {
+	ttl : 0.3
+	frequency : 1.0
+	amplitude : 0.2
+}

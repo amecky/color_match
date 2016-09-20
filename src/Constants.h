@@ -13,6 +13,7 @@ enum BoardEvents {
 	BE_SCORE,
 	BE_SELECTED,
 	BE_STOP_GAME,
+	BE_TEST_SCRIPT,
 	BE_EOL
 };
 

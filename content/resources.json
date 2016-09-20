@@ -30,3 +30,13 @@ dialog {
     file : "GameOver"
     font : "nullshock"
 }
+script {
+	name : "MoveSomething"
+	file : "test"
+	variables : "DT,MV,AMP"
+}
+script {
+	name : "Wiggle"
+	file : "wiggle"
+	variables : "TIMER,TWO_PI"
+}

@@ -94,6 +94,11 @@ int MainGameState::update(float dt) {
 			if (type == BE_STOP_GAME) {
 				stopGame();
 			}
+			if (type == BE_TEST_SCRIPT) {
+				ds::vm::VMContext* ctx = ds::res::getScript("MoveSomething");
+				ds::vm::execute(ctx);
+				LOG << "--------------------> " << DBG_V4(ctx->data[4]);
+			}
 		}
 	}
 

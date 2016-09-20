@@ -7,7 +7,8 @@
 #include <renderer\sprites.h>
 #include <renderer\graphics.h>
 #include <base\InputSystem.h>
-
+#include <core\script\vm.h>
+#include <resources\ResourceContainer.h>
 // -------------------------------------------------------
 // Mouse over state
 // -------------------------------------------------------
@@ -317,6 +318,18 @@ int Board::update(float elapsed) {
 				MyEntry& e = m_Grid.get(x, y);
 				if (e.state == TS_WIGGLE) {
 					e.timer += elapsed;
+
+					ds::vm::VMContext* ctx = ds::res::getScript("Wiggle");
+					ctx->set(0, v4(e.timer));
+					ctx->set(1, v4(TWO_PI));
+					ds::vm::execute(ctx);
+					e.scale = ctx->data[4].x;
+					if (ctx->data[1].x >= 1.0f) {
+						e.state = TS_NORMAL;
+						e.scale = 1.0f;
+					}
+
+					/*
 					if (e.timer >= _ctx->settings.wiggle.ttl) {
 						e.state = TS_NORMAL;
 						e.scale = 1.0f;
@@ -325,6 +338,7 @@ int Board::update(float elapsed) {
 						float norm = e.timer / _ctx->settings.wiggle.ttl;
 						e.scale = 1.0f + sin(norm * TWO_PI * _ctx->settings.wiggle.frequency) * _ctx->settings.wiggle.amplitude;
 					}
+					*/
 				}
 			}
 		}

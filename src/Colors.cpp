@@ -8,6 +8,7 @@
 #include "gamestates\MainGameState.h"
 #include <renderer\sprites.h>
 #include "gamestates\HighscoreState.h"
+#include <core\script\vm.h>
 
 ds::BaseApp *app = new Colors(); 
 
@@ -59,6 +60,11 @@ bool Colors::loadContent() {
 	m->texture = ds::res::find("TextureArray", ds::ResourceType::TEXTURE);
 
 	addShortcut("Stop game", 'e', BE_STOP_GAME);
+	addShortcut("Test script", 't', BE_TEST_SCRIPT);
+
+	ds::vm::VMContext* ctx = ds::res::getScript("MoveSomething");
+	ds::vm::execute(ctx);
+	LOG << "--------------------> " << DBG_V4(ctx->data[4]);
 
 	return true;
 }

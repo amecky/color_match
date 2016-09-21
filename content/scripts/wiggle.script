@@ -1,4 +1,4 @@
-R1 = TIMER / 0.2;
+R1 = TIMER / 0.6;
 R2 = R1 * TWO_PI;
 R2 = R2 * 1.0;
 R3 = 0.2 * SIN(R2);

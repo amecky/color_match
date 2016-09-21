@@ -6,6 +6,7 @@
 #include "GameSettings.h"
 #include <core\utils\StateManager.h>
 #include "GameContext.h"
+#include <core\script\vm.h>
 
 const p2i INVALID_POINT(-1, -1);
 // -------------------------------------------------------
@@ -243,6 +244,7 @@ private:
 	v2 _dialogPos;
 	bool _showBoard;
 	bool _showStates;
+	ds::vm::Script* _wiggleScript;
 	
 };
 

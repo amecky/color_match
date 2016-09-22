@@ -35,6 +35,7 @@ struct MovingCell {
 	v2 end;
 	v2 current;
 	int color;
+	v2 scale;
 };
 
 class ColorGrid : public ds::Grid<MyEntry> {
@@ -61,6 +62,7 @@ struct BoardContext : public ds::StateContext {
 	Points points;
 	GameSettings* settings;
 	MovingCells movingCells;
+	ds::vm::Script* script;
 };
 
 enum BoardMode {
@@ -169,6 +171,10 @@ public:
 	virtual ~ShrinkState() {}
 	int update(float dt);
 	int deactivate();
+	int activate() {
+		_timer = 0.0f;
+		return 0;
+	}
 	int getMode() const {
 		return BM_FLASHING;
 	}
@@ -176,8 +182,10 @@ public:
 		return "ShrinkState";
 	}
 	ds::StateBehavior getBehavior() const {
-		return ds::SB_TRANSIENT;
+		return ds::SB_PERMANENT;
 	}
+private:
+	float _timer;
 };
 
 // -------------------------------------------------------

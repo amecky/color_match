@@ -84,6 +84,7 @@ int PrepareBoardState::activate() {
 			m.start = grid::convert(x, y + 20);
 			m.end = grid::convert(x, y);
 			m.current = m.start;
+			m.scale = v2(1, 1);
 			ctx->movingCells.push_back(m);
 
 			ctx->grid->set(x, y, e);
@@ -128,16 +129,27 @@ int SelectCellState::activate() {
 // -------------------------------------------------------
 int ShrinkState::update(float dt) {
 	BoardContext* ctx = static_cast<BoardContext*>(_ctx);
+	int shrinking = 0;
+	_timer += dt;
+	ctx->script->set(SID("TIMER"), v4(_timer));
+	const ds::vm::Method& m = ctx->script->getMethod(SID("shrink"));
 	for (int x = 0; x < MAX_X; ++x) {
 		for (int y = 0; y < MAX_Y; ++y) {
 			if (!ctx->grid->isFree(x, y)) {
 				MyEntry& e = ctx->grid->get(x, y);
-				if (e.state == TS_SHRINKING) {
-					float norm = getTimer() / ctx->settings->flashTTL;
-					e.scale = 1.0f - norm * 0.9f;
+				if (e.state == TS_SHRINKING) {					
+					ctx->script->execute(m);
+					float norm = ctx->script->getRegister(1).x;
+					e.scale = ctx->script->getRegister(3).x;
+					if (norm < 1.0f) {
+						++shrinking;
+					}
 				}
 			}
 		}
+	}
+	if (shrinking == 0) {
+		return 1;
 	}
 	return 0;
 }
@@ -222,13 +234,14 @@ Board::Board(GameContext* context) : _ctx(context) {
 	_states->addTransition(BM_MOVING, 0, BM_RUNNING, _ctx->settings.droppingTTL);
 	_states->addTransition(BM_SELECTION, 1, BM_FLASHING);
 	_states->addTransition(BM_SELECTION, 0, BM_RUNNING);
-	_states->addTransition(BM_FLASHING, 0, BM_DROPPING, _ctx->settings.flashTTL);
+	_states->addTransition(BM_FLASHING, 1, BM_DROPPING);
 	_states->addTransition(BM_DROPPING, 0, BM_RUNNING, _ctx->settings.droppingTTL);
 	_dialogState = 1;
 	_dialogPos = v2(10, 760);
 	_showStates = false;
 	_showBoard = false;
 	_wiggleScript = ds::res::getScript("Wiggle");
+	_context.script = ds::res::getScript("Wiggle");
 }
 
 Board::~Board(void) {
@@ -312,7 +325,7 @@ int Board::update(float elapsed) {
 			_selection.active = false;
 		}
 	}
-	
+	const ds::vm::Method& m = _wiggleScript->getMethod(SID("wiggle"));
 	for (int x = 0; x < MAX_X; ++x) {
 		for (int y = 0; y < MAX_Y; ++y) {
 			if (!m_Grid.isFree(x, y)) {
@@ -320,7 +333,7 @@ int Board::update(float elapsed) {
 				if (e.state == TS_WIGGLE) {
 					e.timer += elapsed;
 					_wiggleScript->set(0, v4(e.timer));
-					_wiggleScript->execute();
+					_wiggleScript->execute(m);
 					e.scale = _wiggleScript->getRegister(4).x;
 					if (_wiggleScript->getRegister(1).x >= 1.0f) {
 						e.state = TS_NORMAL;

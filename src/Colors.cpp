@@ -25,7 +25,6 @@ void Colors::prepare(ds::Settings* settings) {
 	settings->fullScreen = false;
 	settings->reportingDirectory = "reports";
 	settings->synched = true;
-	settings->logTypes = ds::LogTypes::LT_CONSOLE | ds::LogTypes::LT_FILE;
 }
 
 // -------------------------------------------------------
@@ -64,7 +63,7 @@ bool Colors::loadContent() {
 
 	ds::vm::Script* ctx = ds::res::getScript("MoveSomething");
 	ctx->execute();
-	LOG << "--------------------> " << DBG_V4(ctx->getRegister(4));
+	LOG << "--------------------> " << ctx->getRegister(4);
 
 	return true;
 }

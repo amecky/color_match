@@ -97,7 +97,7 @@ int MainGameState::update(float dt) {
 			if (type == BE_TEST_SCRIPT) {
 				ds::vm::Script* ctx = ds::res::getScript("MoveSomething");
 				ctx->execute();
-				LOG << "--------------------> " << DBG_V4(ctx->getRegister(4));
+				LOG << "--------------------> " << ctx->getRegister(4);
 			}
 		}
 	}

@@ -34,14 +34,19 @@ bool Colors::loadContent() {
 	_context = new GameContext;
 	_context->settings.load();
 	_context->headColor = ds::Color::WHITE;
+
+	ds::game::add_game_object(new HUD());
+
 	addGameState(new ds::BasicMenuGameState("MainMenu", "MainMenu"));
-	//addGameState(new ds::BasicMenuGameState("Intro", "Intro"));
-	//addGameState(new ds::BasicMenuGameState("Credits", "Credits"));
+	addGameState(new ds::BasicMenuGameState("Credits", "Credits"));
 	addGameState(new MainGameState(_context));
 	//addGameState(new HighscoreState(gui, _context));
 	connectGameStates("MainMenu", 1, "MainGameState");
 	connectGameStates("MainGameState", 1, "MainGameState");
-	//connectGameStates("MainGameState", 1, "GameOverState");
+	connectGameStates("MainGameState", 8, "MainMenu");
+	connectGameStates("MainMenu", 3, "Credits");
+	connectGameStates("MainMenu", 4, "Credits");
+	connectGameStates("Credits", 1, "MainMenu");
 	//connectGameStates("GameOverState", 1, "MainGameState");
 	_showSettings = false;
 	/*
@@ -60,6 +65,7 @@ bool Colors::loadContent() {
 
 	addShortcut("Stop game", 'e', BE_STOP_GAME);
 	addShortcut("Test script", 't', BE_TEST_SCRIPT);
+	addShortcut("Fade to gray", 'f', BE_FADING);
 
 	ds::vm::Script* ctx = ds::res::getScript("MoveSomething");
 	ctx->execute();
@@ -72,39 +78,13 @@ bool Colors::loadContent() {
 // init
 // -------------------------------------------------------
 void Colors::init() {
-	activate("MainMenu");
+	pushState("MainGameState");
 }
-// -------------------------------------------------------
-// On GUI button
-// -------------------------------------------------------
-/*
-void Colors::onGUIButton(ds::DialogID dlgID,int button) {
-	LOG << "dialog " << dlgID << " button " << button;
-	if (dlgID == 1 && button == 2) {
-		shutdown();
-	}
-}
-*/
-// -------------------------------------------------------
-// process events
-// -------------------------------------------------------
-/*
-void Colors::processEvents(const ds::EventStream& events) {
-	for (uint32_t i = 0; i < events.num(); ++i) {
-		uint32_t type = events.getType(i);
-		switch (type) {
-			case GE_SHOW_TEST_GUI: activate("TestGUIState"); break;
-			case GE_HIDE_TEST_GUI: deactivate("TestGUIState"); break;
-			case GE_TOGGLE_SETTINGS: _showSettings = !_showSettings; break;
-		}
-	}
-}
-*/
+
 // -------------------------------------------------------
 // Update
 // -------------------------------------------------------
 void Colors::update(float dt) {
-	_context->hud.tick(dt);
 }
 
 // -------------------------------------------------------
@@ -114,5 +94,4 @@ void Colors::render() {
 	ds::SpriteBuffer* sprites = graphics::getSpriteBuffer();
 	sprites->draw(v2(512, 734), math::buildTexture(720,   0, 1024, 68));
 	sprites->draw(v2(512, 34), math::buildTexture(800, 0, 1024, 68));
-	_context->hud.render();
 }

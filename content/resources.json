@@ -7,6 +7,7 @@ sampler_state {
 	addressU : "CLAMP"
 	addressV : "CLAMP"
 	addressW : "CLAMP"
+	filter : "LINEAR"
 }
 texture {
 	name : "TextureArray" 
@@ -30,6 +31,11 @@ dialog {
     file : "GameOver"
     font : "nullshock"
 }
+dialog {
+    name : "Credits"
+    file : "Credits"
+    font : "nullshock"
+}
 script {
 	name : "MoveSomething"
 	file : "test"
@@ -39,4 +45,10 @@ script {
 	name : "Wiggle"
 	file : "wiggle"
 	variables : "TIMER,TWO_PI"
+}
+render_target {
+	name : "RT1"
+	width : 1024
+	height : 768
+	clear_color : 0,0,0,0
 }

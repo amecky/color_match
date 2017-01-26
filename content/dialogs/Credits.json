@@ -23,6 +23,10 @@
 "text" { "id" : "22" , "pos" : "500,350" , "text" : "freesounds.org"  , "centered" : "false" }
 "text" { "id" : "23" , "pos" : "500,300" , "text" : "XScale"  , "centered" : "false" }
 
-"button" { "id" : "1" , "pos" : "400,120" , "text" : "Main Menu" , "rect" : "510,0,340,50" }
+image_button { 
+	id : 1
+	pos : 400,200 
+	rect : 130,270,260,60
+}
 
 

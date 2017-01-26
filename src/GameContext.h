@@ -18,7 +18,6 @@ struct GameContext {
 
 	Score score;
 	GameSettings settings;
-	HUD hud;
 	ds::Color headColor;
 	ds::Color colors[8];
 
@@ -30,8 +29,6 @@ struct GameContext {
 		score.totalPieces = MAX_X * MAX_Y;
 		score.minutes = 0;
 		score.seconds = 0;
-		//m_PercentageNumbers.create(Vector2f(512, 50), 0);
-		//m_HUD.reset();
 	}
 
 	void pick_colors() {

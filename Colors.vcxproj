@@ -224,8 +224,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Board.cpp" />
+    <ClCompile Include="src\BoardStates.cpp" />
     <ClCompile Include="src\Colors.cpp" />
-    <ClCompile Include="src\gamestates\GameOverState.cpp" />
     <ClCompile Include="src\gamestates\HighscoreState.cpp" />
     <ClCompile Include="src\gamestates\MainGameState.cpp" />
     <ClCompile Include="src\HUD.cpp" />
@@ -234,10 +234,10 @@
   <ItemGroup>
     <ClInclude Include="resource.h" />
     <ClInclude Include="src\Board.h" />
+    <ClInclude Include="src\BoardStates.h" />
     <ClInclude Include="src\Colors.h" />
     <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\GameContext.h" />
-    <ClInclude Include="src\gamestates\GameOverState.h" />
     <ClInclude Include="src\gamestates\HighscoreState.h" />
     <ClInclude Include="src\gamestates\MainGameState.h" />
     <ClInclude Include="src\HUD.h" />
@@ -252,7 +252,9 @@
     <None Include="content\dialogs\hud.json" />
     <None Include="content\dialogs\MainMenu.json" />
     <None Include="content\engine_settings.json" />
+    <None Include="content\resources.json" />
     <None Include="content\resources\gui.json" />
+    <None Include="content\resources\nullshock.json" />
     <None Include="content\resources\sprites.json" />
     <None Include="content\resources\xscale.json" />
     <None Include="content\screenshake.json" />

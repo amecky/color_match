@@ -32,8 +32,6 @@ public:
 	void init();
 	void update(float dt);
 	void render();
-	//void onGUIButton(ds::DialogID dlgID,int button);
-	//void processEvents(const ds::EventStream& events);
 protected:
 	void prepare(ds::Settings* settings);
 private:

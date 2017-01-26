@@ -9,9 +9,16 @@ MainGameState::MainGameState(GameContext* context) : ds::GameState("MainGameStat
 	_gridTex[0] = math::buildTexture(200, 420, 430, 486);
 	_gridTex[1] = math::buildTexture(200, 450, 320, 486);
 	_gridTex[2] = math::buildTexture(200, 860, 110, 486);
-	//_effect = new ds::GrayFadeEffect();
+	
 	_gameOver = ds::res::getGUIDialog("GameOver");
 	_mode = GM_RUNNING;
+	_hud = (HUD*)ds::game::get_game_object(SID("HUD"));
+
+	ds::GrayFadePostProcessDescriptor desc;
+	desc.source = ds::res::find("RT1", ds::ResourceType::RENDERTARGET);
+	desc.target = INVALID_RID;
+	desc.ttl = 1.0f;
+	_process = new ds::GrayFadePostProcess(desc);
 }
 
 
@@ -30,8 +37,8 @@ void MainGameState::activate() {
 	_timer = 0.0f;
 	//_effect->deactivate();
 	// FIXME: reset score
-	_context->hud.reset();
-	_context->hud.activate();	
+	_hud->reset();
+	_hud->activate();
 	_gameOver->deactivate();
 	_mode = GM_RUNNING;
 }
@@ -40,7 +47,7 @@ void MainGameState::activate() {
 // activate
 // --------------------------------------------
 void MainGameState::deactivate() {
-	_context->hud.deactivate();
+	_hud->deactivate();
 	_gameOver->deactivate();
 }
 
@@ -50,8 +57,9 @@ void MainGameState::deactivate() {
 void MainGameState::stopGame() {
 	_timer = 0.0f;
 	_mode = GM_OVER;
-	_context->hud.deactivate();
+	_hud->deactivate();
 	_gameOver->activate();
+	_process->activate();
 	/*
 	ds::GUIDialog* dlg = _gui->get("GameOver");
 	std::string str;
@@ -72,12 +80,11 @@ void MainGameState::stopGame() {
 // update
 // --------------------------------------------
 int MainGameState::update(float dt) {
-	//_effect->tick(dt);
 	if (_mode == GM_RUNNING) {
 		int points = _board->update(dt);
 		if (points > 0) {
 			_context->score.points += points * points * 10;
-			_context->hud.setNumber(_context->score.points);
+			_hud->setNumber(_context->score.points);
 			if (points > _context->score.highestCombo) {
 				_context->score.highestCombo = points;
 				LOG << "new highest combo: " << _context->score.highestCombo;
@@ -99,8 +106,18 @@ int MainGameState::update(float dt) {
 				ctx->execute();
 				LOG << "--------------------> " << ctx->getRegister(4);
 			}
+			if (type == BE_FADING) {
+				if (_process->isActive()) {
+					_process->deactivate();
+				}
+				else {
+					_process->activate();
+				}
+			}
 		}
 	}
+
+	_process->tick(dt);
 
 	return 0;
 }
@@ -126,17 +143,20 @@ int MainGameState::onButtonUp(int button, int x, int y) {
 // render
 // --------------------------------------------
 void MainGameState::render() {
+	_process->begin();
 	ds::SpriteBuffer* sprites = graphics::getSpriteBuffer();
 	sprites->draw(v2(295, 362), _gridTex[0]);
 	sprites->draw(v2(670, 362), _gridTex[1]);
 	sprites->draw(v2(885, 362), _gridTex[2]);
-	//_effect->start();
 	_board->render();
 	_gameOver->render();
-	//_effect->render();
-	//if (!_running) {
-		//ds::sprites::draw(v2(512, 384), ds::math::buildTexture(880, 0, 640, 60));
-	//}
+	sprites->end();
+	_process->render();
+	if (_mode == GM_OVER) {
+		sprites->begin();
+		_gameOver->render();
+		sprites->end();
+	}
 }
 
 // --------------------------------------------

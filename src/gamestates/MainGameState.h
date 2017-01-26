@@ -3,7 +3,7 @@
 #include "..\GameContext.h"
 #include <gamestates\GameState.h>
 #include "..\Board.h"
-//#include <effects\GrayFadeRenderEffect.h>
+#include <postprocess\GrayFadePostProcess.h>
 
 class MainGameState : public ds::GameState {
 
@@ -27,9 +27,10 @@ private:
 	GameContext* _context;
 	Board* _board;
 	ds::Texture _gridTex[3];
-	//ds::GrayFadeEffect* _effect;
+	HUD* _hud;
 	ds::GUIDialog* _gameOver;
 	float _timer;
 	GameMode _mode;
+	ds::GrayFadePostProcess* _process;
 };
 

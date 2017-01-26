@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="utils">
-      <UniqueIdentifier>{c116d32a-d0b6-47e3-bc98-cfdb207b0884}</UniqueIdentifier>
-    </Filter>
     <Filter Include="gamestates">
       <UniqueIdentifier>{56fc1830-7f43-433a-a305-400188d02930}</UniqueIdentifier>
     </Filter>
@@ -21,9 +18,6 @@
     <ClCompile Include="src\Colors.cpp" />
     <ClCompile Include="src\Board.cpp" />
     <ClCompile Include="src\Map.cpp" />
-    <ClCompile Include="src\gamestates\GameOverState.cpp">
-      <Filter>gamestates</Filter>
-    </ClCompile>
     <ClCompile Include="src\gamestates\MainGameState.cpp">
       <Filter>gamestates</Filter>
     </ClCompile>
@@ -31,6 +25,7 @@
       <Filter>gamestates</Filter>
     </ClCompile>
     <ClCompile Include="src\HUD.cpp" />
+    <ClCompile Include="src\BoardStates.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -38,9 +33,6 @@
     <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\Board.h" />
     <ClInclude Include="src\Map.h" />
-    <ClInclude Include="src\gamestates\GameOverState.h">
-      <Filter>gamestates</Filter>
-    </ClInclude>
     <ClInclude Include="src\GameContext.h" />
     <ClInclude Include="src\gamestates\MainGameState.h">
       <Filter>gamestates</Filter>
@@ -50,6 +42,7 @@
       <Filter>gamestates</Filter>
     </ClInclude>
     <ClInclude Include="src\HUD.h" />
+    <ClInclude Include="src\BoardStates.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Colors.manifest" />
@@ -86,6 +79,12 @@
     </None>
     <None Include="content\dialogs\MainMenu.json">
       <Filter>content\dialogs</Filter>
+    </None>
+    <None Include="content\resources.json">
+      <Filter>content</Filter>
+    </None>
+    <None Include="content\resources\nullshock.json">
+      <Filter>content\resources</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

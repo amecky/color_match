@@ -14,6 +14,7 @@ enum BoardEvents {
 	BE_SELECTED,
 	BE_STOP_GAME,
 	BE_TEST_SCRIPT,
+	BE_FADING,
 	BE_EOL
 };
 
